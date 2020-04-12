@@ -15,26 +15,26 @@ public class DbConnect {
 		// TODO Auto-generated constructor stub
 		try {
 			Class.forName(driver);
-			//System.out.println("µå¶óÀÌ¹ö ¼º°ø");
+			//System.out.println("ë“œë¼ì´ë²„ ì„±ê³µ");
 		} catch (ClassNotFoundException e) {
-			System.out.println("µå¶óÀÌ¹ö ½ÇÆĞ:"+e.getMessage());
+			System.out.println("ë“œë¼ì´ë²„ ì‹¤íŒ¨:"+e.getMessage());
 		}
 	}
 
-	//¿À¶óÅ¬ ¿¬°áÈÄ connection À» ¹İÈ¯ÇÏ´Â ¸Ş¼­µå
+	//ì˜¤ë¼í´ ì—°ê²° í›„connection ì„ ë°˜í™˜í•˜ëŠ” ë©”ì„œë“œ
 	public Connection getConnection()
 	{
 		Connection conn=null;
 		try {
 			conn=DriverManager.getConnection(url, "project", "a1234");
-			//System.out.println("¿À¶óÅ¬ ¿¬°á ¼º°ø");
+			//System.out.println("ì˜¤ë¼í´ ì—°ê²° ì„±ê³µ");
 		} catch (SQLException e) {
-			System.out.println("¿À¶óÅ¬ ¿¬°á ½ÇÆĞ:"+e.getMessage());
+			System.out.println("ì˜¤ë¼í´ ì—°ê²°  ì‹¤íŒ¨:"+e.getMessage());
 		}
 		return conn;
 	}
 
-	//°­»ç pc ¿¬°á
+	//ê°•ì‚¬ pc ì—°ê²°
 	public Connection getGangsaConnection()
 	{
 		String gangsaurl="jdbc:oracle:thin:@192.168.0.3:1521:xe";
@@ -42,13 +42,13 @@ public class DbConnect {
 		Connection conn=null;
 		try {
 			conn=DriverManager.getConnection(gangsaurl, "angel", "a1234");
-			//System.out.println("¿À¶óÅ¬ ¿¬°á ¼º°ø");
+			//System.out.println("ì˜¤ë¼í´ ì—°ê²° ì„±ê³µ");
 		} catch (SQLException e) {
-			System.out.println("¿À¶óÅ¬ ¿¬°á ½ÇÆĞ:"+e.getMessage());
+			System.out.println("ì˜¤ë¼í´ ì—°ê²° ì‹¤íŒ¨:"+e.getMessage());
 		}
 		return conn;
 	}
-	//sql ÀÚ¿øµéÀ» ´İ´Â ¸Ş¼­µå
+	//sql ìì›ë“¤ì„ ë‹«ëŠ” ë©”ì„œë“œ
 	public void dbClose(PreparedStatement pstmt,Connection conn)
 	{
 		try {

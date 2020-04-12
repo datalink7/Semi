@@ -1,18 +1,17 @@
-package data.dao;
+package user.data;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.PreparedStatement; 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import data.dto.UserDto;
 import oracle.db.DbConnect;
 
 public class UserDao {
 	DbConnect db=new DbConnect();
 	
-	//¾ÆÀÌµğ¸¦ °Ë»öÇØ¼­ ÀÖÀ¸¸é true, ¾øÀ¸¸é false ¹İÈ¯
-	public boolean isEquarId(String userId)
+	//ì•„ì´ë””ë¥¼ ê²€ìƒ‰í•´ì„œ ìˆìœ¼ë©´ true, ì—†ìœ¼ë©´ false ë°˜í™˜
+	public void isEquarId(UserDto dto)
 	{
 		boolean find=false;
 		Connection conn=null;
@@ -20,19 +19,25 @@ public class UserDao {
 		ResultSet rs=null;
 		String sql="select count(*) from tb_user where user_id=?";
 		
+		String userId=dto.getUserId();
+		
 		conn=db.getConnection();
 		try {
 			pstmt=conn.prepareStatement(sql);
-			//¹ÙÀÎµù
+			//ë°”ì¸ë”©
 			pstmt.setString(1, userId);
-			//½ÇÇà
+			//ì‹¤í–‰
 			rs=pstmt.executeQuery();
-			//Á¶°Ç
+			//ì¡°ê±´
 			if(rs.next())
 			{
 				int n=rs.getInt(1);
 				if(n==1)
 					find=true;
+					System.out.println("ì•„ì´ë”” ì¤‘ë³µ - íšŒì›ê°€ì… ë¶ˆê°€ëŠ¥");
+			}else {
+				System.out.println("íšŒì›ê°€ì… ê°€ëŠ¥");
+				insertUser(dto);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -40,22 +45,20 @@ public class UserDao {
 		} finally {
 			db.dbClose(rs, pstmt, conn);
 		}
-		
-		return find;
 	}
 	
 	public void insertUser(UserDto dto)
 	{
 		Connection conn=null;
 		PreparedStatement pstmt=null;
-		String sql="insert into tb_user(user_id,user_pwd,user_name,user_phone,user_sex,user_email,user_addr1) values (?,?,?,?,?,?,?)";
+		String sql="insert into tb_user(user_id,user_pwd,user_name,user_phone,user_sex,user_email) values (?,?,?,?,?,?,?)";
 		
-		//db¿¬°á
+		//dbì—°ê²°
 		conn=db.getConnection();
 		
 		try {
 			pstmt=conn.prepareStatement(sql);
-			//¹ÙÀÎµù
+			//ë°”ì¸ë”©
 			pstmt.setString(1, dto.getUserId());
 			pstmt.setString(2, dto.getUserPwd());
 			pstmt.setString(3, dto.getUserName());
@@ -63,8 +66,11 @@ public class UserDao {
 			pstmt.setString(5, dto.getUserSex());
 			pstmt.setString(6, dto.getUserEmail());
 			pstmt.setString(7, dto.getUserAddr1());
-			//½ÇÇà
+
+			//ì‹¤í–‰
 			pstmt.execute();
+			
+			System.out.println("íšŒì›ê°€ì…ì™„ë£Œ!");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
