@@ -4,7 +4,7 @@ public class UserDto {
 	private String userId;
 	private String userPwd;
 	private String userName;
-	private String userPhone; 
+	private String userPhone;
 	private String userSex;
 	private String userEmail;
 	private String userAddr1;
@@ -79,6 +79,5 @@ public class UserDto {
 	public void setUserAddr5(String userAddr5) {
 		this.userAddr5 = userAddr5;
 	}
-	
 	
 }

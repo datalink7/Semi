@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<h2>메인 이지롱</h2>
 </body>
 </html>

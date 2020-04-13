@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	//한글 엔코딩 
+	//한글 엔코딩
 	request.setCharacterEncoding("utf-8");
 
 	//데이터 불러오기
@@ -27,9 +27,9 @@
 	dto.setUserEmail(userEmail);
 	dto.setUserAddr1(userAddr1);
 	
-	//dao 생성
+	//dao생성
 	UserDao db=new UserDao();
 	
 	//insert 메서드 호출
-	db.isEquarId(dto);
+	db.isEqualId(dto);
 %>
