@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import oracle.db.DbConnect;
 
 public class UserDao {
@@ -91,6 +93,8 @@ public class UserDao {
 		
 		conn=db.getConnection();
 		
+		System.out.println(sql);
+		
 		try {
 			pstmt=conn.prepareStatement(sql);
 			//바인딩
@@ -101,7 +105,10 @@ public class UserDao {
 			//조건 - 데이터가 있으면 아이디 비번이 일치한다.
 			if(rs.next())
 			{
+				System.out.println("로그인성공");
 				bLogin=true;
+			}else {
+				System.out.println("로그인실패");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -109,6 +116,8 @@ public class UserDao {
 		} finally {
 			db.dbClose(rs, pstmt, conn);
 		}
+		
+		System.out.println(bLogin);
 		return bLogin;
 	}
 }

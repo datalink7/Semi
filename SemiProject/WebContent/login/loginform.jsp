@@ -38,21 +38,7 @@
 					"idSave":idSave
 				},
 				success:function(data){
-					$("#out1").html("<b>로그인이 완료되었습니다.</b>");
-/* 				if(data==0){	//로그인 실패시
-						console.log(data);
-						var str="";
-						str+="<div id='out2' style='color:blue; font-size:20pt;'>";
-						str+="로그인 정보를 정확히 입력해주세요."
-						str+="</div>";
-					}else{
-						console.log(data);
-						var str="";
-						str+="<div id='out2' style='color:blue; font-size:20pt;'>";
-						str+="로그인 완료!!"
-						str+="</div>";
-						location.href="../main/mainform.jsp"; 
-					} */
+					idSaveCheck();
 				}
 			});
 		});
@@ -91,12 +77,7 @@
 	<tr>
 		<th></th>
 		<td>
-			<%if(checkok==null || checkok.equals("no")) 
-			{%>
-				<input type="checkbox" name="idSave">아이디 저장
-			<%}else{%>
-				<input type="checkbox" name="idSave">아이디 저장
-			<%} %>
+			<input type="checkbox" name="idSave" id="userIdSave">아이디 저장
 		</td>
 	</tr>
 </table>

@@ -92,6 +92,7 @@ function post1() {
 				},
 				success:function(data){
 					$("#out").html("<b>"+userName+"님 회원가입이 완료되었습니다.</b>");
+					location.href = "/SemiProject/main/mainform.jsp"
 				}
 			});
 		});
