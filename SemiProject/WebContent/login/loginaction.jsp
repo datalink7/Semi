@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <%@page import="user.data.UserDao"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 	//userid, userpwd, idsave
@@ -17,25 +18,6 @@
 	boolean bLogin=dao.isLogin(userId,userPwd);
 	//true 면 세션에 loginok,checkok,idok 저장 후
 	//이동 : successpage.jsp 를 메인 위치에
-	//false 면 스크립트로 경고 후 이전페이지 
-	
-	if(bLogin)
-	{
-		//세션 유지 시간 지정
-		session.setMaxInactiveInterval(10*60);
-		//로그인 상태 저장
-		session.setAttribute("loginok", "ok");
-		//아이디 저장 체크 상태 저장
-		if(idsave==null)
-			session.setAttribute("checkok", "no");
-		else
-			session.setAttribute("checkok", "yes");
-		
-		response.sendRedirect("../main/mainform.jsp");
-		}else {%>
-		<script type="text/javascript">
-			alert("로그인 정보를 정확히 입력해주세요.");
-			history.back();
-		</script>
-	<%}
+	//false 면 스크립트로 경고 후 이전페이지 	
 %>
+<data><%=bLogin?"yes":"no"%></data>
