@@ -22,6 +22,9 @@ function post1() {
     }).open();
 }
 	$(function(){
+		
+		var idCheckCnt = 0;
+		
 		$("#btnaddr").click(function(){
 			
 		});
@@ -41,9 +44,42 @@ function post1() {
 			}
 		});
 		
-		$("#joinBtn").click(function(){
+		$("#idCheck").click(function(){
 			var userId=$("#userId").val();
-			var userPwd=$("#userPwd").val();
+			
+			if(userId.length==0){
+				alert("아이디를 입력해주세요.");
+				$("#userId").focus();
+				return;
+			}else{
+				$.ajax({
+					type:"post",
+					url:"useradd.jsp",
+					datatype:"html",
+					data:{
+						"userId":userId,
+						"state":"idCheck"
+					},
+					success:function(data){
+						if($(data).text().trim() == "yes"){
+							idCheckCnt++;
+							alert("사용가능한 아이디입니다.");
+						}else{
+							idCheckCnt = 0;
+							alert("중복된 아이디입니다.");
+							$("#userId").val("");
+							$("#userId").focus();
+						}
+					}
+				});
+			}
+		});
+		
+		$("#joinBtn").click(function(){
+			
+			var userId=$("#userId").val();
+			var userPwd=$("#userPwd1").val();
+			var userPwd2=$("#userPwd2").val();
 			var userName=$("#userName").val();
 			var userPhone=$("#userPhone").val();
 			var userSex=$("input:radio[name=userSex]:checked").val();
@@ -55,46 +91,59 @@ function post1() {
 				alert("아이디를 입력해주세요.");
 				$("#userId").focus();
 				return;
-			}else if(userPwd.length==0){
-				alert("비밀번호를 입력해주세요.")
+			}else if($("#userPwd1").length==0){
+				alert("비밀번호를 입력해주세요.");
 				$("#userPwd").focus();
 				return;
 			}else if(userName.length==0){
-				alert("이름을 입력해주세요.")
+				alert("이름을 입력해주세요.");
 				$("#userName").focus();
 				return;
 			}else if(userPhone.length==0){
-				alert("핸드폰 번호를 입력해주세요.")
+				alert("핸드폰 번호를 입력해주세요.");   
 				$("#userPhone").focus();
 				return;
 			}else if(userEmail.length==0){
-				alert("이메일을 입력해주세요.")
+				alert("이메일을 입력해주세요.");
 				$("#userEmail1").focus();
 				return;
 			}else if(userAddr.length==0){
-				alert("주소를 입력해주세요.")
+				alert("주소를 입력해주세요.");
 				$("#userAddr1").focus();
 				return;
 			}
 			
-			$.ajax({
-				type:"post",
-				url:"useradd.jsp",
-				datatype:"html",
-				data:{
-					"userId":userId,
-					"userPwd":userPwd,
-					"userName":userName,
-					"userPhone":userPhone,
-					"userSex":userSex,
-					"userEmail":userEmail,
-					"userAddr":userAddr
-				},
-				success:function(data){
-					$("#out").html("<b>"+userName+"님 회원가입이 완료되었습니다.</b>");
-					location.href = "/SemiProject/main/mainform.jsp"
-				}
-			});
+			if(userPwd != userPwd2){
+				alert("입력한 두 비밀번호가 일치하지 않습니다.");
+				$("#userPwd2").val("");
+				$("#userPwd2").focus();
+				return;
+			}
+			
+			if(idCheckCnt == 0){
+				alert("아이디 중복체크를 해주세요");
+				return;
+			}else{
+				$.ajax({
+					type:"post",
+					url:"useradd.jsp",
+					datatype:"html",
+					data:{
+						"userId":userId,
+						"userPwd":userPwd,
+						"userName":userName,
+						"userPhone":userPhone,
+						"userSex":userSex,
+						"userEmail":userEmail,
+						"userAddr":userAddr,
+						"state":"join"
+					},
+					success:function(data){
+						$("#out").html("<b>"+userName+"님 회원가입이 완료되었습니다.</b>");
+						location.href = "/SemiProject/main/mainform.jsp"
+					}
+				});
+			}
 		});
 	});
 </script>
@@ -106,12 +155,19 @@ function post1() {
 		<th style="width: 150px; background-color: orange;">아이디</th>
 		<td>
 			<input type="text" id="userId" size="20" autofocus="autofocus" required="required">
+			<button type="button" id="idCheck" style="width: 80px;">중복체크</button>
 		</td>
 	</tr>
 	<tr>
 		<th style="width:150px; background-color: orange;">비밀번호</th>
 		<td>
-			<input type="password" id="userPwd" size="20" required="required">
+			<input type="password" id="userPwd1" size="20" required="required">
+		</td>
+	</tr>
+	<tr>
+		<th style="width:150px; background-color: orange;">비밀번호 확인</th>
+		<td>
+			<input type="password" id="userPwd2" size="20" required="required">
 		</td>
 	</tr>
 	<tr>

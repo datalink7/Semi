@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <%@page import="user.data.UserDao"%>
 <%@page import="user.data.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -14,6 +15,7 @@
 	String userSex=request.getParameter("userSex");
 	String userEmail=request.getParameter("userEmail");
 	String userAddr1=request.getParameter("userAddr");
+	String state = request.getParameter("state");
 	
 	//dto 생성
 	UserDto dto=new UserDto();
@@ -31,5 +33,6 @@
 	UserDao db=new UserDao();
 	
 	//insert 메서드 호출
-	db.isEqualId(dto);
+	boolean find = db.isEqualId(dto, state); 
 %>
+<data><%=find?"no":"yes"%></data>

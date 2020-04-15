@@ -13,7 +13,7 @@ public class UserDao {
 	DbConnect db=new DbConnect();
 	
 	//아이디를 검색해서 있으면 true, 없으면 false 반환
-	public void isEqualId(UserDto dto)
+	public boolean isEqualId(UserDto dto, String state)
 	{
 		boolean find=false;
 		Connection conn=null;
@@ -39,7 +39,9 @@ public class UserDao {
 					System.out.println("아이디 중복 - 회원가입 불가능");
 				} else {
 					System.out.println("회원가입 가능");
-					insertUser(dto);
+					if(state == "join") {
+						insertUser(dto);
+					}
 				}
 			}
 		} catch (SQLException e) {
@@ -49,6 +51,9 @@ public class UserDao {
 			db.dbClose(rs, pstmt, conn);
 		}
 		
+		System.out.println(find);
+		
+		return find;
 	}
 	
 	public void insertUser(UserDto dto)
