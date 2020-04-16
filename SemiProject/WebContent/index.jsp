@@ -1,262 +1,553 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Newline CSS Template with a video background</title>
-<!--
-Newline Template
-http://www.templatemo.com/tm-503-newline
--->
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+<head>
+<!-- SITE TITTLE -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick Box</title>
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/fontAwesome.css">
-        <link rel="stylesheet" href="css/templatemo-style.css">
+<!-- Bootstrap -->
+<link href="plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<!-- Owl Carousel -->
+<link href="plugins/slick-carousel/slick/slick.css" rel="stylesheet">
+<link href="plugins/slick-carousel/slick/slick-theme.css" rel="stylesheet">
+<!-- Fancy Box -->
+<link href="plugins/fancybox/jquery.fancybox.pack.css" rel="stylesheet">
+<link href="plugins/jquery-nice-select/css/nice-select.css" rel="stylesheet">
+<link href="plugins/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css" rel="stylesheet">
+<!-- CUSTOM CSS -->
+<link href="css/style.css" rel="stylesheet">
 
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+<!-- JAVASCRIPTS -->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="plugins/jquery/dist/jquery.min.js"></script>
+<script src="plugins/tether/js/tether.min.js"></script>
+<script src="plugins/raty/jquery.raty-fa.js"></script>
+<script src="plugins/bootstrap/dist/js/popper.min.js"></script>
+<script src="plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+<script
+	src="plugins/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+<script src="plugins/slick-carousel/slick/slick.min.js"></script>
+<script src="plugins/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+<script src="plugins/fancybox/jquery.fancybox.pack.js"></script>
+<!-- <script src="plugins/smoothscroll/SmoothScroll.min.js"></script> -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
 
-        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
-    </head>
-    <body>
+</head>
 
-        <div class="overlay"></div>
-        <section class="top-part">
-          <video controls autoplay loop>
-            <source src="videos/video.mp4" type="video/mp4">
-            <source src="videos/video.ogg" type="video/ogg">
-          Your browser does not support the video tag.
-          </video>
-        </section>
+<body class="body-wrapper">
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<nav class="navbar navbar-expand-lg  navigation">
+						<a class="navbar-brand" href="index.jsp"> 
+							<img src="images/main_logo.png" style="width: 196px; height: 52px;" alt="">
+						</a>
+						<button class="navbar-toggler" type="button"
+							data-toggle="collapse" data-target="#navbarSupportedContent"
+							aria-controls="navbarSupportedContent" aria-expanded="false"
+							aria-label="Toggle navigation">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav ml-auto main-nav ">
+								<li class="nav-item active">
+									<a class="nav-link" href="index.jsp">Home</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#">예약</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#">조회</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#">고객센터</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#">마이페이지</a>
+								</li>
+								<li class="nav-item dropdown dropdown-slide">
+									<a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Listing 
+										<span><i class="fa fa-angle-down"></i></span>
+									</a> <!-- Dropdown list -->
+									<div class="dropdown-menu dropdown-menu-right">
+										<a class="dropdown-item" href="#">Action</a> 
+										<a class="dropdown-item" href="#">Another action</a> 
+										<a class="dropdown-item" href="#">Something else here</a> 
+									</div>
+								</li>
+							</ul>
+							<ul class="navbar-nav ml-auto mt-10">
+								<li class="nav-item">
+									<a class="nav-link login-button" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+								</li>
+<!-- 								<li class="nav-item"><a class="nav-link add-button" href="#"> -->
+<!-- 									<i class="fa fa-plus-circle"></i> Add Listing</a> -->
+<!-- 								</li> -->
+							</ul>
+						</div>
+					</nav>  
+				</div>
+			</div>
+		</div>
+	</section>   
+	
+	<!-- Modal -->
+	<div class="modal fade" id="loginModal" role="dialog">
+		<div class="modal-dialog modal-md" style="top: 20%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Login</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+					<jsp:include page="login/loginform.jsp"/>
+			</div>
+		</div>
+	</div>
 
-        <section class="cd-hero">
+	<section class="hero-area bg-1 text-center overly">
+	<!-- Container Start -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<!-- Header Contetnt -->
+				<div class="content-block">
+					<h1>Buy & Sell Near You </h1>
+					<p>Join the millions who buy and sell from each other <br> everyday in local communities around the world</p>
+					<div class="short-popular-category-list text-center">
+						<h2>Popular Category</h2>
+						<ul class="list-inline">
+							<li class="list-inline-item">
+								<a href=""><i class="fa fa-bed"></i> Hotel</a></li>
+							<li class="list-inline-item">
+								<a href=""><i class="fa fa-grav"></i> Fitness</a>
+							</li>
+							<li class="list-inline-item">
+								<a href=""><i class="fa fa-car"></i> Cars</a>
+							</li>
+							<li class="list-inline-item">
+								<a href=""><i class="fa fa-cutlery"></i> Restaurants</a>
+							</li>
+							<li class="list-inline-item">
+								<a href=""><i class="fa fa-coffee"></i> Cafe</a>
+							</li>
+						</ul>
+					</div>
+					
+				</div>
+				<!-- Advance Search -->
+				<div class="advance-search">
+					<form action="#">
+						<div class="row">
+							<!-- Store Search -->
+							<div class="col-lg-6 col-md-12">
+								<div class="block d-flex">
+									<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="search" placeholder="Search for store">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-12">
+								<div class="block d-flex">
+									<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="search" placeholder="Search for store">
+									<!-- Search Button -->
+									<button class="btn btn-main">SEARCH</button>
+								</div>
+							</div>
+						</div>
+					</form>
+					
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- Container End -->
+</section>
 
-          <div class="cd-slider-nav">
-            <nav>
-              <span class="cd-marker item-1"></span>
-              <ul>
-                <li class="selected"><a href="#0"><div class="image-icon"><img src="img/home-icon.png"></div><h6>Home</h6></a></li>
-                <li><a href="#0"><div class="image-icon"><img src="img/about-icon.png"></div><h6>로그인</h6></a></li>
-                <li><a href="#0"><div class="image-icon"><img src="img/featured-icon.png"></div><h6>예약</h6></a></li>
-                <li><a href="#0"><div class="image-icon"><img src="img/projects-icon.png"></div><h6>조회</h6></a></li>
-                <li><a href="#0"><div class="image-icon"><img src="img/contact-icon.png"></div><h6>고객센터</h6></a></li>
-                <li><a href="#0"><div class="image-icon"><img src="img/contact-icon.png"></div><h6>마이페이지</h6></a></li>
-              </ul>
-            </nav>
-          </div> <!-- .cd-slider-nav -->
-
-          <ul class="cd-hero-slider">
-
-            <li class="selected">
-              <div class="heading">
-                <h1>NEWLINE</h1>
-                <span>Welcome To Web Design Agency</span>
-              </div>
-              <div class="cd-full-width first-slide">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="content first-content">
-                        <h4>Let’s Talk More About Newline</h4>
-                        <p>Newline is free CSS template by TemplateMo. Credits go to <a href="https://videos.pexels.com/videos/busy-street-in-the-city-1089" target="_blank">Pexels.com</a> for a video background and <a href="http://unsplash.com" target="_blank">Unsplash</a> for images. Please tell your friends about TemplateMo and this is a way to help back. Thank you. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque dictum convallis mi. In dapibus auctor dictum donec mattis quis eros ultricies feugiat.</p>
-                        <div class="primary-button">
-                          <a href="#">Discover More</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-
-            <li>
-              <div class="heading">
-                <h1>LOGIN</h1>
-                <span>Login / Sign Up</span>
-              </div>
-              <div class="cd-half-width second-slide">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="content second-content">
-                        <div class="inner_login">
-                            <div class="login_tistory">
-                                <jsp:include page="login/loginform.jsp"></jsp:include>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-
-            <li>
-              <div class="heading">
-                <h1>Featured</h1>
-                <span>We produce featured product every week</span>
-              </div>
-              <div class="cd-half-width third-slide">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="content third-content">
-                        <div class="row">
-                          <div class="col-md-7 left-image">
-                            <img src="img/left-feature-image.png">
-                          </div>
-                          <div class="col-md-5">
-                            <div class="right-feature-text">
-                              <h4>Featured Product: <em>Newline</em></h4>
-                              <p>Lorem ipsum dolor amet, consecte adipiscing elit, quisque dictum convallis mi. In dapibus auctor dictum donec mattis quis eros ultricies feugiat. Morbi congue faucibus mi, ague blandit curabitur ac lacinia.</p>
-                              <div class="feature-list">
-                                <ul>
-                                  <p>- Suspendisse mattis finibus sem</p>
-                                  <p>- Pellentesque et urna vel lectus</p>
-                                  <p>- Vestibulum iaculis nisi dui</p>
-                                  <p>- Donec sagittis eros , ac tempus ligula</p>
-                                  <p>- Integer sapien risus, auctor</p>
-                                </ul>
-                              </div>
-                              <div class="primary-button">
-                                <a href="#">Discover More</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-
-            <li>
-              <div class="heading">
-                <h1>Our projects</h1>
-                <span>Here you can check our recent projects</span>
-              </div>
-              <div class="cd-half-width fourth-slide">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="content fourth-content">
-                        <div class="row">
-                          <div class="col-md-3 project-item">
-                            <a href="img/item-01.jpg" data-lightbox="image-1"><img src="img/project-item-01.jpg"></a>
-                          </div>
-                          <div class="col-md-3 project-item">
-                            <a href="img/item-02.jpg" data-lightbox="image-1"><img src="img/project-item-02.jpg"></a>
-                          </div>
-                          <div class="col-md-3 project-item">
-                            <a href="img/item-03.jpg" data-lightbox="image-1"><img src="img/project-item-03.jpg"></a>
-                          </div>
-                          <div class="col-md-3 project-item">
-                            <a href="img/item-04.jpg" data-lightbox="image-1"><img src="img/project-item-04.jpg"></a>
-                          </div>
-                          <div class="col-md-3 project-item">
-                            <a href="img/item-05.jpg" data-lightbox="image-1"><img src="img/project-item-05.jpg"></a>
-                          </div>
-                          <div class="col-md-3 project-item">
-                            <a href="img/item-06.jpg" data-lightbox="image-1"><img src="img/project-item-06.jpg"></a>
-                          </div>
-                          <div class="col-md-3 project-item">
-                            <a href="img/item-07.jpg" data-lightbox="image-1"><img src="img/project-item-07.jpg"></a>
-                          </div>
-                          <div class="col-md-3 project-item">
-                            <a href="img/item-08.jpg" data-lightbox="image-1"><img src="img/project-item-08.jpg"></a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-
-            <li>
-              <div class="heading">
-                <h1>Contact us</h1>
-                <span>You'll be responded within 48 hrs</span>
-              </div>
-              <div class="cd-half-width fivth-slide">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="content fivth-content">
-                        <div class="row">
-                          <div class="col-md-4">
-                            <div class="left-info">
-                              <p>Maecenas imperdiet sagittis lacus, ut consequat velit iaculis id. Praesent eu consequat urna. Morbi justo dolor, ornare sed lorem et, auctor iaculis ligula.
-                              <br><br>
-                              <em>3344 Donec mollis libero<br>at metus luctus 10110</em>
-                              </p>
-                              <ul class="social-icons">
-                                <i><a href="#"><i class="fa fa-facebook"></i></a></i>
-                                <i><a href="#"><i class="fa fa-twitter"></i></a></i>
-                                <i><a href="#"><i class="fa fa-linkedin"></i></a></i>
-                                <i><a href="#"><i class="fa fa-rss"></i></a></i>
-                                <i><a href="#"><i class="fa fa-behance"></i></a></i>
-                              </ul>
-                            </div>
-                          </div>
-                          <div class="col-md-8">
-                            <div class="row">
-                              <form id="contact" action="" method="post">
-                                <div class="col-md-6">
-                                  <fieldset>
-                                    <input name="name" type="text" class="form-control" id="name" placeholder="Your Name" required>
-                                  </fieldset>
-                                </div>
-                                <div class="col-md-6">
-                                  <fieldset>
-                                    <input name="email" type="email" class="form-control" id="email" placeholder="Email" required>
-                                  </fieldset>
-                                </div>
-                                <div class="col-md-12">
-                                  <fieldset>
-                                    <textarea name="message" rows="6" class="form-control" id="message" placeholder="Message" required></textarea>
-                                  </fieldset>
-                                </div>
-                                <div class="col-md-12">
-                                  <fieldset>
-                                    <button type="submit" id="form-submit" class="btn">Send Message</button>
-                                  </fieldset>
-                                </div>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-          </ul> <!-- .cd-hero-slider -->
-        </section> <!-- .cd-hero -->
+<!--===================================
+=            Client Slider            =
+====================================-->
 
 
-        <footer>
-          <p>Copyright &copy; 2017 Your Company
+<!--===========================================
+=            Popular deals section            =
+============================================-->
 
-        	| Designed by <em>TemplateMo</em></p>
-        </footer>
+<section class="popular-deals section bg-gray">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="section-title">
+					<h2>Trending Ads</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, magnam.</p>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<!-- offer 01 -->
+			<div class="col-sm-12 col-lg-4">
+				<!-- product card -->
+<div class="product-item bg-light">
+	<div class="card">
+		<div class="thumb-content">
+			<!-- <div class="price">$200</div> -->
+			<a href="">
+				<img class="card-img-top img-fluid" src="images/products/products-1.jpg" alt="Card image cap">
+			</a>
+		</div>
+		<div class="card-body">
+		    <h4 class="card-title"><a href="">11inch Macbook Air</a></h4>
+		    <ul class="list-inline product-meta">
+		    	<li class="list-inline-item">
+		    		<a href=""><i class="fa fa-folder-open-o"></i>Electronics</a>
+		    	</li>
+		    	<li class="list-inline-item">
+		    		<a href=""><i class="fa fa-calendar"></i>26th December</a>
+		    	</li>
+		    </ul>
+		    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
+		    <div class="product-ratings">
+		    	<ul class="list-inline">
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
+		    	</ul>
+		    </div>
+		</div>
+	</div>
+</div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
-        <script src="js/vendor/bootstrap.min.js"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
 
-    </body>
+			</div>
+			<div class="col-sm-12 col-lg-4">
+				<!-- product card -->
+<div class="product-item bg-light">
+	<div class="card">
+		<div class="thumb-content">
+			<!-- <div class="price">$200</div> -->
+			<a href="">
+				<img class="card-img-top img-fluid" src="images/products/products-2.jpg" alt="Card image cap">
+			</a>
+		</div>
+		<div class="card-body">
+		    <h4 class="card-title"><a href="">Full Study Table Combo</a></h4>
+		    <ul class="list-inline product-meta">
+		    	<li class="list-inline-item">
+		    		<a href=""><i class="fa fa-folder-open-o"></i>Furnitures</a>
+		    	</li>
+		    	<li class="list-inline-item">
+		    		<a href=""><i class="fa fa-calendar"></i>26th December</a>
+		    	</li>
+		    </ul>
+		    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
+		    <div class="product-ratings">
+		    	<ul class="list-inline">
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
+		    	</ul>
+		    </div>
+		</div>
+	</div>
+</div>
+
+
+
+			</div>
+			<div class="col-sm-12 col-lg-4">
+				<!-- product card -->
+<div class="product-item bg-light">
+	<div class="card">
+		<div class="thumb-content">
+			<!-- <div class="price">$200</div> -->
+			<a href="">
+				<img class="card-img-top img-fluid" src="images/products/products-3.jpg" alt="Card image cap">
+			</a>
+		</div>
+		<div class="card-body">
+		    <h4 class="card-title"><a href="">11inch Macbook Air</a></h4>
+		    <ul class="list-inline product-meta">
+		    	<li class="list-inline-item">
+		    		<a href=""><i class="fa fa-folder-open-o"></i>Electronics</a>
+		    	</li>
+		    	<li class="list-inline-item">
+		    		<a href=""><i class="fa fa-calendar"></i>26th December</a>
+		    	</li>
+		    </ul>
+		    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
+		    <div class="product-ratings">
+		    	<ul class="list-inline">
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
+		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
+		    	</ul>
+		    </div>
+		</div>
+	</div>
+</div>
+
+
+
+			</div>
+			
+			
+		</div>
+	</div>
+</section>
+
+
+
+<!--==========================================
+=            All Category Section            =
+===========================================-->
+
+<section class=" section">
+	<!-- Container Start -->
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<!-- Section title -->
+				<div class="section-title">
+					<h2>All Categories</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, provident!</p>
+				</div>
+				<div class="row">
+					<!-- Category list -->
+					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
+						<div class="category-block">
+							<div class="header">
+								<i class="fa fa-laptop icon-bg-1"></i> 
+								<h4>Electronics</h4>
+							</div>
+							<ul class="category-list" >
+								<li><a href="category.html">Laptops <span>93</span></a></li>
+								<li><a href="category.html">Iphone <span>233</span></a></li>
+								<li><a href="category.html">Microsoft  <span>183</span></a></li>
+								<li><a href="category.html">Monitors <span>343</span></a></li>
+							</ul>
+						</div>
+					</div> <!-- /Category List -->
+					<!-- Category list -->
+					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
+						<div class="category-block">
+							<div class="header">
+								<i class="fa fa-apple icon-bg-2"></i> 
+								<h4>Restaurants</h4>
+							</div>
+							<ul class="category-list" >
+								<li><a href="category.html">Cafe <span>393</span></a></li>
+								<li><a href="category.html">Fast food <span>23</span></a></li>
+								<li><a href="category.html">Restaurants  <span>13</span></a></li>
+								<li><a href="category.html">Food Track<span>43</span></a></li>
+							</ul>
+						</div>
+					</div> <!-- /Category List -->
+					<!-- Category list -->
+					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
+						<div class="category-block">
+							<div class="header">
+								<i class="fa fa-home icon-bg-3"></i> 
+								<h4>Real Estate</h4>
+							</div>
+							<ul class="category-list" >
+								<li><a href="category.html">Farms <span>93</span></a></li>
+								<li><a href="category.html">Gym <span>23</span></a></li>
+								<li><a href="category.html">Hospitals  <span>83</span></a></li>
+								<li><a href="category.html">Parolurs <span>33</span></a></li>
+							</ul>
+						</div>
+					</div> <!-- /Category List -->
+					<!-- Category list -->
+					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
+						<div class="category-block">
+							<div class="header">
+								<i class="fa fa-shopping-basket icon-bg-4"></i> 
+								<h4>Shoppings</h4>
+							</div>
+							<ul class="category-list" >
+								<li><a href="category.html">Mens Wears <span>53</span></a></li>
+								<li><a href="category.html">Accessories <span>212</span></a></li>
+								<li><a href="category.html">Kids Wears <span>133</span></a></li>
+								<li><a href="category.html">It & Software <span>143</span></a></li>
+							</ul>
+						</div>
+					</div> <!-- /Category List -->
+					<!-- Category list -->
+					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
+						<div class="category-block">
+							<div class="header">
+								<i class="fa fa-briefcase icon-bg-5"></i> 
+								<h4>Jobs</h4>
+							</div>
+							<ul class="category-list" >
+								<li><a href="category.html">It Jobs <span>93</span></a></li>
+								<li><a href="category.html">Cleaning & Washing <span>233</span></a></li>
+								<li><a href="category.html">Management  <span>183</span></a></li>
+								<li><a href="category.html">Voluntary Works <span>343</span></a></li>
+							</ul>
+						</div>
+					</div> <!-- /Category List -->
+					<!-- Category list -->
+					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
+						<div class="category-block">
+							<div class="header">
+								<i class="fa fa-car icon-bg-6"></i> 
+								<h4>Vehicles</h4>
+							</div>
+							<ul class="category-list" >
+								<li><a href="category.html">Bus <span>193</span></a></li>
+								<li><a href="category.html">Cars <span>23</span></a></li>
+								<li><a href="category.html">Motobike  <span>33</span></a></li>
+								<li><a href="category.html">Rent a car <span>73</span></a></li>
+							</ul>
+						</div>
+					</div> <!-- /Category List -->
+					<!-- Category list -->
+					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
+						<div class="category-block">
+							<div class="header">
+								<i class="fa fa-paw icon-bg-7"></i> 
+								<h4>Pets</h4>
+							</div>
+							<ul class="category-list" >
+								<li><a href="category.html">Cats <span>65</span></a></li>
+								<li><a href="category.html">Dogs <span>23</span></a></li>
+								<li><a href="category.html">Birds  <span>113</span></a></li>
+								<li><a href="category.html">Others <span>43</span></a></li>
+							</ul>
+						</div>
+					</div> <!-- /Category List -->
+					<!-- Category list -->
+					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
+						<div class="category-block">
+							<div class="header">
+								<i class="fa fa-laptop icon-bg-8"></i> 
+								<h4>Services</h4>
+							</div>
+							<ul class="category-list" >
+								<li><a href="category.html">Cleaning <span>93</span></a></li>
+								<li><a href="category.html">Car Washing <span>233</span></a></li>
+								<li><a href="category.html">Clothing  <span>183</span></a></li>
+								<li><a href="category.html">Business <span>343</span></a></li>
+							</ul>
+						</div>
+					</div> <!-- /Category List -->
+					
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Container End -->
+</section>
+
+<!--============================
+=            Footer            =
+=============================-->
+
+	<footer class="footer section section-sm">
+		<!-- Container Start -->
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-7 offset-md-1 offset-lg-0">
+					<!-- About -->
+					<div class="block about">
+						<!-- footer logo -->
+						<img src="images/logo-footer.png" alt="">
+						<!-- description -->
+						<p class="alt-color">Lorem ipsum dolor sit amet, consectetur
+							adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+							dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+							exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							consequat.</p>
+					</div>
+				</div>
+				<!-- Link list -->
+				<div class="col-lg-2 offset-lg-1 col-md-3">
+					<div class="block">
+						<h4>Site Pages</h4>
+						<ul>
+							<li><a href="#">Boston</a></li>
+							<li><a href="#">How It works</a></li>
+							<li><a href="#">Deals & Coupons</a></li>
+							<li><a href="#">Articls & Tips</a></li>
+							<li><a href="#">Terms of Services</a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- Link list -->
+				<div class="col-lg-2 col-md-3 offset-md-1 offset-lg-0">
+					<div class="block">
+						<h4>Admin Pages</h4>
+						<ul>
+							<li><a href="#">Boston</a></li>
+							<li><a href="#">How It works</a></li>
+							<li><a href="#">Deals & Coupons</a></li>
+							<li><a href="#">Articls & Tips</a></li>
+							<li><a href="#">Terms of Services</a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- Promotion -->
+				<div class="col-lg-4 col-md-7">
+					<!-- App promotion -->
+					<div class="block-2 app-promotion">
+						<a href=""> <!-- Icon --> <img
+							src="images/footer/phone-icon.png" alt="mobile-icon">
+						</a>
+						<p>Get the Dealsy Mobile App and Save more</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Container End -->
+	</footer>
+	<!-- Footer Bottom -->
+	<footer class="footer-bottom">
+		<!-- Container Start -->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-12">
+					<!-- Copyright -->
+					<div class="copyright">
+						<p>Copyright © 2016. All Rights Reserved</p>
+					</div>
+				</div>
+				<div class="col-sm-6 col-12">
+					<!-- Social Icons -->
+					<ul class="social-media-icons text-right">
+						<li><a class="fa fa-facebook" href=""></a></li>
+						<li><a class="fa fa-twitter" href=""></a></li>
+						<li><a class="fa fa-pinterest-p" href=""></a></li>
+						<li><a class="fa fa-vimeo" href=""></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- Container End -->
+		<!-- To Top -->
+		<div class="top-to">
+			<a id="top" class="" href=""><i class="fa fa-angle-up"></i></a>
+		</div>
+	</footer>
+</body>
+
 </html>
+

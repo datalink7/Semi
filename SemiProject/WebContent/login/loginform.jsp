@@ -21,7 +21,7 @@
 				$("#userId").focus();
 				return;
 			}else if(userPwd.length==0){
-				alert("비밀번호를 입력해주세요.")
+				alert("비밀번호를 입력해주세요.");
 				$("#userPwd").focus();
 				return;
 			}
@@ -102,8 +102,9 @@
 	});
 </script>
 </head>
+<% %>
 <body>
-
+<!-- 
 	<form method="post" id="authForm"
 		action="https://www.tistory.com/auth/login">
 		<input type="hidden" name="redirectUrl"
@@ -123,16 +124,54 @@
 			<button type="button" id="loginBtn" class="btn_login">로그인</button>
 			<div class="login_append">
 				<div class="inp_chk">
-					<!-- 체크시 checked 추가 -->
+					체크시 checked 추가
 					<input type="checkbox" id="userIdSave" class="inp_radio" name="keepLogin"> 
 					<label for="keepLogin" class="lab_g">아이디 저장</label>
 				</div>
 				<span class="txt_find"> 
+				<a href="/SemiProject/login/idSearch.jsp" class="link_find" id="id_find">아이디 찾기</a>
+                /
+                <a href="/member/find/password" class="link_find" id="pwd_find">비밀번호 찾기</a>
+                /
 				<a href="/SemiProject/user/userform.jsp" class="link_find">회원가입</a>
 				</span>
 			</div>
 		</fieldset>
-	</form>
-	
+	</form> -->
+
+	<div class="modal-body">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="userId">아이디:</label>
+				<div class="col-sm-12">
+					<input type="email" class="form-control" id="userId"
+						placeholder="Enter userId" name="userId">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-4" for="userPwd">비밀번호:</label>
+				<div class="col-sm-12">
+					<input type="password" class="form-control" id="userPwd"
+						placeholder="Enter password" name="userPwd">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<div class="checkbox">
+						<label><input type="checkbox" name="remember" id="userIdSave"> 아이디
+							저장</label>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default"
+			style="width: 143px; height: 50px;">아이디 찾기</button>
+		<button type="button" class="btn btn-default"
+			style="width: 162px; height: 50px;">비밀번호 찾기</button>
+		<button type="button" class="btn btn-danger" id="loginBtn"
+			style="width: 108px; height: 50px; margin-left: auto">로그인</button>
+	</div>
 </body>
 </html>
