@@ -35,17 +35,38 @@
 <script src="plugins/raty/jquery.raty-fa.js"></script>
 <script src="plugins/bootstrap/dist/js/popper.min.js"></script>
 <script src="plugins/bootstrap/dist/js/bootstrap.min.js"></script>
-<script
-	src="plugins/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
+<script src="plugins/seiyria-bootstrap-slider/dist/bootstrap-slider.min.js"></script>
 <script src="plugins/slick-carousel/slick/slick.min.js"></script>
 <script src="plugins/jquery-nice-select/js/jquery.nice-select.min.js"></script>
 <script src="plugins/fancybox/jquery.fancybox.pack.js"></script>
 <!-- <script src="plugins/smoothscroll/SmoothScroll.min.js"></script> -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
 
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#btnaddr").on("click",function(){
+		post1();
+	});
+	
+	function post1() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+	            // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+	           var zonecode=data.zonecode;
+	           var roadAddr = data.address;
+	           var str="("+zonecode+")"+roadAddr;
+//	            console.log(str);
+	            $("#userAddr1").val(str);
+	        }
+	    }).open();
+	}
+});
+</script>
 </head>
-
 <body class="body-wrapper">
+	<!-- 상단헤더고정 -->
 	<section>
 		<div class="container">
 			<div class="row">
@@ -62,39 +83,39 @@
 						</button>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="navbar-nav ml-auto main-nav ">
-								<li class="nav-item active">
-									<a class="nav-link" href="index.jsp">Home</a>
+								<li class="nav-item">
+									<a class="nav-link" href="index.jsp"><b>Home</b></a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="#">예약</a>
+									<a class="nav-link" href="resv/resvForm.jsp">예약</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" href="#">조회</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="#">고객센터</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="#">마이페이지</a>
+									<a class="nav-link" href="user/mypage.jsp">마이페이지</a>
 								</li>
 								<li class="nav-item dropdown dropdown-slide">
-									<a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Listing 
+									<a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">고객센터 
 										<span><i class="fa fa-angle-down"></i></span>
 									</a> <!-- Dropdown list -->
 									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#">Action</a> 
-										<a class="dropdown-item" href="#">Another action</a> 
-										<a class="dropdown-item" href="#">Something else here</a> 
+										<a class="dropdown-item" href="cscenter/faq.jsp">자주묻는질문</a> 
+										<a class="dropdown-item" href="cscenter/qna.jsp">Q&A</a> 
+										<a class="dropdown-item" href="cscenter/review.jsp">사용후기</a> 
 									</div>
 								</li>
 							</ul>
 							<ul class="navbar-nav ml-auto mt-10">
-								<li class="nav-item">
+								<li class="nav-item" id="joinLi" style="display: block;">
+									<a class="nav-link login-button" href="#" data-toggle="modal" data-target="#joinModal">JoinUs</a>
+								</li>
+								<li class="nav-item" id="loginLi" style="display: block;">
 									<a class="nav-link login-button" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
 								</li>
-<!-- 								<li class="nav-item"><a class="nav-link add-button" href="#"> -->
-<!-- 									<i class="fa fa-plus-circle"></i> Add Listing</a> -->
-<!-- 								</li> -->
+								<li class="nav-item" id="logoutLi" style="display: block;">
+									<a class="nav-link login-button" href="#">Logout</a>
+								</li>
 							</ul>
 						</div>
 					</nav>  
@@ -102,16 +123,119 @@
 			</div>
 		</div>
 	</section>   
+	<!-- 상단헤더고정 -->
 	
-	<!-- Modal -->
+	<!-- Join Modal -->
+	<div class="modal fade" id="joinModal" role="dialog">
+		<div class="modal-dialog modal-md" style="">
+			<div class="modal-content">     
+				<div class="modal-header">
+					<h4 class="modal-title">JOIN US</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body" style="padding-bottom: 0px;">
+					<table class="table">
+						<tbody>
+							<tr>
+								<td style="width: 26%;">아이디</td>
+								<td>
+									<input type="text" class="form-control col-sm-8" id="joinUserId" name="joinUserId" style="height: 30px; float: left">
+									<button type="button" id="idCheck" class="btn btn-sm" style="padding: 3px 10px; margin-left: 5px;">중복확인</button>
+								</td>
+							</tr>
+							<tr>
+								<td style="width: 26%;">비밀번호</td>
+								<td><input type="password" class="form-control" id="joinUserPwd" name="joinUserPwd" style="height: 30px;"></td>
+							</tr>
+							<tr>
+								<td style="width: 26%;">비밀번호확인</td>
+								<td><input type="password" class="form-control" id="joinUserPwdChk" name="joinUserPwdChk" style="height: 30px;"></td>
+							</tr>
+							<tr>
+								<td style="width: 26%;">이름</td>
+								<td><input type="password" class="form-control" id="joinUserName" name="joinUserName" style="height: 30px;"></td>
+							</tr>
+							<tr>
+								<td style="width: 26%;">핸드폰번호</td>
+								<td><input type="password" class="form-control" id="joinUserPhone" placeholder="'-' 를 빼고 입력해주세요." name="joinUserPhone" style="height: 30px;"></td>
+							</tr>
+							<tr>
+								<td style="width: 26%;">성별</td>
+								<td>
+									<div class="radio">
+										<label><input type="radio" name="joinUserSex" value="M" checked>남자</label>
+										<label><input type="radio" name="joinUserSex" value="F">여자</label>
+									</div>
+								</td>
+							</tr>
+							<tr>  
+								<td style="width: 26%;">이메일</td>
+								<td>
+									<input type="text" class="form-control col-sm-5" id="joinUserEmail1" name="joinUserEmail1" style="height: 30px; float: left">&nbsp@
+									<input type="text" class="form-controll col-sm-6" id="joinUserEmail2" name="joinUserEmail2" style="height: 30px;">
+									<select class="form-control"  id="joinUserEmail3" name="joinUserEmail3" style="height: 36px; margin-top: 4px;">
+										<option value="-">직접입력</option>
+										<option value="gmail.com">구글</option>
+										<option value="naver.com">네이버</option>
+										<option value="daum.net">다음</option>     
+										<option value="nate.com">네이트</option>
+								</select>
+								</td>
+							</tr>
+							<tr>   
+								<td style="width: 26%;">주소</td>
+								<td>
+									<input type="text" class="form-control col-sm-8" id="joinUserAdd1" name="joinUserAdd1" style="height: 30px; float: left">
+									<button type="button" id="btnaddr" class="btn btn-sm" style="padding: 3px 10px; margin-left: 5px;">주소검색</button>
+									<input type="text" class="form-control" id="joinUserAdd2" name="joinUserAdd2" style="height: 30px; margin-top: 4px;">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" style="width: 124px; height: 50px; margin-left: auto">회원가입</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Login Modal -->
 	<div class="modal fade" id="loginModal" role="dialog">
 		<div class="modal-dialog modal-md" style="top: 20%;">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Login</h4>
+					<h4 class="modal-title">LOGIN</h4>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
-					<jsp:include page="login/loginform.jsp"/>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-sm-2" for="userId">아이디:</label>
+							<div class="col-sm-12">
+								<input type="text" class="form-control" id="loginUserId" placeholder="Enter userId" name="userId">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-4" for="userPwd">비밀번호:</label>
+							<div class="col-sm-12">
+								<input type="password" class="form-control" id="loginUserPwd" placeholder="Enter password" name="userPwd">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<div class="checkbox">
+									<label><input type="checkbox" name="remember"> 아이디 저장</label>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" style="width: 143px; height: 50px;">아이디 찾기</button>
+					<button type="button" class="btn btn-default" style="width: 162px; height: 50px;">비밀번호 찾기</button>
+					<button type="button" class="btn btn-danger" style="width: 108px; height: 50px; margin-left: auto">로그인</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -123,44 +247,20 @@
 			<div class="col-md-12">
 				<!-- Header Contetnt -->
 				<div class="content-block">
-					<h1>Buy & Sell Near You </h1>
-					<p>Join the millions who buy and sell from each other <br> everyday in local communities around the world</p>
-					<div class="short-popular-category-list text-center">
-						<h2>Popular Category</h2>
-						<ul class="list-inline">
-							<li class="list-inline-item">
-								<a href=""><i class="fa fa-bed"></i> Hotel</a></li>
-							<li class="list-inline-item">
-								<a href=""><i class="fa fa-grav"></i> Fitness</a>
-							</li>
-							<li class="list-inline-item">
-								<a href=""><i class="fa fa-car"></i> Cars</a>
-							</li>
-							<li class="list-inline-item">
-								<a href=""><i class="fa fa-cutlery"></i> Restaurants</a>
-							</li>
-							<li class="list-inline-item">
-								<a href=""><i class="fa fa-coffee"></i> Cafe</a>
-							</li>
-						</ul>
-					</div>
+					<p style="font-size:30px;">바쁜 일상 속,<br>
+					 내 택배는 무사히 도착했을까?<br>
+					 도난 당하지는 않았을까?</p>
+					<p style="font-size:35px;"><b>안전한 통합 택배서비스 <br><b style="color: lightcoral;">QuickBox</b>가 해결해드립니다.</b></p>
 					
 				</div>
 				<!-- Advance Search -->
-				<div class="advance-search">
+				<div class="advance-search" style="display: none;">
 					<form action="#">
 						<div class="row">
 							<!-- Store Search -->
 							<div class="col-lg-6 col-md-12">
 								<div class="block d-flex">
 									<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="search" placeholder="Search for store">
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-12">
-								<div class="block d-flex">
-									<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="search" placeholder="Search for store">
-									<!-- Search Button -->
-									<button class="btn btn-main">SEARCH</button>
 								</div>
 							</div>
 						</div>
@@ -183,274 +283,127 @@
 =            Popular deals section            =
 ============================================-->
 
-<section class="popular-deals section bg-gray">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="section-title">
-					<h2>Trending Ads</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, magnam.</p>
+	<section class="popular-deals section bg-gray" style="padding-top: 60px; padding-bottom: 0px;">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="section-title">
+						<img src="images/image1.PNG" alt="">
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row">
-			<!-- offer 01 -->
-			<div class="col-sm-12 col-lg-4">
-				<!-- product card -->
-<div class="product-item bg-light">
-	<div class="card">
-		<div class="thumb-content">
-			<!-- <div class="price">$200</div> -->
-			<a href="">
-				<img class="card-img-top img-fluid" src="images/products/products-1.jpg" alt="Card image cap">
-			</a>
-		</div>
-		<div class="card-body">
-		    <h4 class="card-title"><a href="">11inch Macbook Air</a></h4>
-		    <ul class="list-inline product-meta">
-		    	<li class="list-inline-item">
-		    		<a href=""><i class="fa fa-folder-open-o"></i>Electronics</a>
-		    	</li>
-		    	<li class="list-inline-item">
-		    		<a href=""><i class="fa fa-calendar"></i>26th December</a>
-		    	</li>
-		    </ul>
-		    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
-		    <div class="product-ratings">
-		    	<ul class="list-inline">
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-		    	</ul>
-		    </div>
-		</div>
-	</div>
-</div>
-
-
-
-			</div>
-			<div class="col-sm-12 col-lg-4">
-				<!-- product card -->
-<div class="product-item bg-light">
-	<div class="card">
-		<div class="thumb-content">
-			<!-- <div class="price">$200</div> -->
-			<a href="">
-				<img class="card-img-top img-fluid" src="images/products/products-2.jpg" alt="Card image cap">
-			</a>
-		</div>
-		<div class="card-body">
-		    <h4 class="card-title"><a href="">Full Study Table Combo</a></h4>
-		    <ul class="list-inline product-meta">
-		    	<li class="list-inline-item">
-		    		<a href=""><i class="fa fa-folder-open-o"></i>Furnitures</a>
-		    	</li>
-		    	<li class="list-inline-item">
-		    		<a href=""><i class="fa fa-calendar"></i>26th December</a>
-		    	</li>
-		    </ul>
-		    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
-		    <div class="product-ratings">
-		    	<ul class="list-inline">
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-		    	</ul>
-		    </div>
-		</div>
-	</div>
-</div>
-
-
-
-			</div>
-			<div class="col-sm-12 col-lg-4">
-				<!-- product card -->
-<div class="product-item bg-light">
-	<div class="card">
-		<div class="thumb-content">
-			<!-- <div class="price">$200</div> -->
-			<a href="">
-				<img class="card-img-top img-fluid" src="images/products/products-3.jpg" alt="Card image cap">
-			</a>
-		</div>
-		<div class="card-body">
-		    <h4 class="card-title"><a href="">11inch Macbook Air</a></h4>
-		    <ul class="list-inline product-meta">
-		    	<li class="list-inline-item">
-		    		<a href=""><i class="fa fa-folder-open-o"></i>Electronics</a>
-		    	</li>
-		    	<li class="list-inline-item">
-		    		<a href=""><i class="fa fa-calendar"></i>26th December</a>
-		    	</li>
-		    </ul>
-		    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, aliquam!</p>
-		    <div class="product-ratings">
-		    	<ul class="list-inline">
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item selected"><i class="fa fa-star"></i></li>
-		    		<li class="list-inline-item"><i class="fa fa-star"></i></li>
-		    	</ul>
-		    </div>
-		</div>
-	</div>
-</div>
-
-
-
-			</div>
-			
 			
 		</div>
-	</div>
-</section>
+	</section>
 
 
 
-<!--==========================================
+	<!--==========================================
 =            All Category Section            =
 ===========================================-->
 
-<section class=" section">
+<section class=" section" style="padding-top: 60px;">
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
 				<!-- Section title -->
 				<div class="section-title">
-					<h2>All Categories</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis, provident!</p>
+					<h2>QuickBox란?</h2>
+					<p>빠르고 간편한 통합 배송 서비스 <br> 기존의 배송보다 편리함과 간편함을 더한 새로운 배송 플랫폼의 시작</p>
 				</div>
 				<div class="row">
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-laptop icon-bg-1"></i> 
-								<h4>Electronics</h4>
+					<!-- offer 01 -->
+					<div class="col-sm-12 col-lg-4">
+						<!-- product card -->
+						<div class="product-item bg-light">
+							<div class="card">
+								<div class="thumb-content" style="text-align: center; margin-top: 32px;">
+									<p style="font-size: 23px; color: black;"><b>간편한 비대면<br>안심 서비스</b></p>
+									<img class="card-img-top img-fluid" src="images/image2.jpg" style="width: 250px; heigth: 300px;" alt="Card image cap">
+								</div>
+								<div class="card-body" style="text-align: center;">
+									<p style="margin-bottom: 0; font-size: 16px; color: black;">도난, 분실 및 도난방지 <br>개별 패스워드 설정을<br>통한 보안강화</p>
+								</div>
 							</div>
-							<ul class="category-list" >
-								<li><a href="category.html">Laptops <span>93</span></a></li>
-								<li><a href="category.html">Iphone <span>233</span></a></li>
-								<li><a href="category.html">Microsoft  <span>183</span></a></li>
-								<li><a href="category.html">Monitors <span>343</span></a></li>
-							</ul>
 						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-apple icon-bg-2"></i> 
-								<h4>Restaurants</h4>
+					</div>
+					<!-- offer 01 -->
+					<div class="col-sm-12 col-lg-4">
+						<!-- product card -->
+						<div class="product-item bg-light">
+							<div class="card">
+								<div class="thumb-content" style="text-align: center; margin-top: 32px;">
+									<p style="font-size: 23px; color: black;"><b>배송비 50%<br>할인 서비스</b></p>
+									<img class="card-img-top img-fluid" src="images/image3.png" style="width: 250px; padding: 29px 0;" alt="Card image cap">
+								</div>
+								<div class="card-body" style="text-align: center;">
+									<p style="margin-bottom: 0; font-size: 16px; color: black;">QuickBox 지점간<br>배송서비스 이용 시<br>배송비 50% 절감</p>
+								</div>
 							</div>
-							<ul class="category-list" >
-								<li><a href="category.html">Cafe <span>393</span></a></li>
-								<li><a href="category.html">Fast food <span>23</span></a></li>
-								<li><a href="category.html">Restaurants  <span>13</span></a></li>
-								<li><a href="category.html">Food Track<span>43</span></a></li>
-							</ul>
 						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-home icon-bg-3"></i> 
-								<h4>Real Estate</h4>
+					</div>
+					<!-- offer 01 -->
+					<div class="col-sm-12 col-lg-4">
+						<!-- product card -->
+						<div class="product-item bg-light">
+							<div class="card">
+								<div class="thumb-content" style="text-align: center; margin-top: 32px;">
+									<p style="font-size: 23px; color: black;"><b>기존 배송 서비스<br>불편 사항 개선</b></p>
+									<img class="card-img-top img-fluid" src="images/image4.png" style="width: 250px; padding: 12px 0;" alt="Card image cap">
+								</div>
+								<div class="card-body" style="text-align: center;">
+									<p style="margin-bottom: 0; font-size: 16px; color: black;">택배 이용고객과 <br>택배기사 모두를 만족시키는 <br>새로운 플랫폼</p>
+								</div>
 							</div>
-							<ul class="category-list" >
-								<li><a href="category.html">Farms <span>93</span></a></li>
-								<li><a href="category.html">Gym <span>23</span></a></li>
-								<li><a href="category.html">Hospitals  <span>83</span></a></li>
-								<li><a href="category.html">Parolurs <span>33</span></a></li>
-							</ul>
 						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-shopping-basket icon-bg-4"></i> 
-								<h4>Shoppings</h4>
+					</div>
+					<!-- offer 01 -->
+					<div class="col-sm-12 col-lg-4">
+						<!-- product card -->
+						<div class="product-item bg-light">
+							<div class="card">
+								<div class="thumb-content" style="text-align: center; margin-top: 32px;">
+									<p style="font-size: 23px; color: black;"><b>개인정보 보안</b></p>
+									<img class="card-img-top img-fluid" src="images/image5.png" style="width: 250px; padding: 30px 0;" alt="Card image cap">
+								</div>
+								<div class="card-body" style="text-align: center;">
+									<p style="margin-bottom: 0; font-size: 16px; color: black;">택배 박스에 부착 된  <br>송장번호 노출 가능성 <br>ZERO</p>
+								</div>
 							</div>
-							<ul class="category-list" >
-								<li><a href="category.html">Mens Wears <span>53</span></a></li>
-								<li><a href="category.html">Accessories <span>212</span></a></li>
-								<li><a href="category.html">Kids Wears <span>133</span></a></li>
-								<li><a href="category.html">It & Software <span>143</span></a></li>
-							</ul>
 						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-briefcase icon-bg-5"></i> 
-								<h4>Jobs</h4>
+					</div>
+					<!-- offer 01 -->
+					<div class="col-sm-12 col-lg-4">
+						<!-- product card -->
+						<div class="product-item bg-light">
+							<div class="card">
+								<div class="thumb-content" style="text-align: center; margin-top: 32px;">
+									<p style="font-size: 23px; color: black;"><b>사칭 및 범죄예방</b></p>
+									<img class="card-img-top img-fluid" src="images/image6.jpg" style="width: 250px; heigth: 300px;" alt="Card image cap">
+								</div>
+								<div class="card-body" style="text-align: center;">
+									<p style="margin-bottom: 0; font-size: 16px; color: black;">택배기사 사칭범죄 예방 및 <br>1인 가구 안심<br>택배 서비스</p>
+								</div>
 							</div>
-							<ul class="category-list" >
-								<li><a href="category.html">It Jobs <span>93</span></a></li>
-								<li><a href="category.html">Cleaning & Washing <span>233</span></a></li>
-								<li><a href="category.html">Management  <span>183</span></a></li>
-								<li><a href="category.html">Voluntary Works <span>343</span></a></li>
-							</ul>
 						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-car icon-bg-6"></i> 
-								<h4>Vehicles</h4>
+					</div>
+					<!-- offer 01 -->
+					<div class="col-sm-12 col-lg-4">
+						<!-- product card -->
+						<div class="product-item bg-light">
+							<div class="card">
+								<div class="thumb-content" style="text-align: center; margin-top: 32px;">
+									<p style="font-size: 23px; color: black;"><b>365일 24시간<br>연중무휴</b></p>
+									<img class="card-img-top img-fluid" src="images/image7.jpg" style="width: 250px; padding: 17px 0;" alt="Card image cap">
+								</div>
+								<div class="card-body" style="text-align: center;">
+									<p style="margin-bottom: 0; font-size: 16px; color: black;">365일, 24시간 <br>언제 어디서나!<br>간편하게!</p>
+								</div>
 							</div>
-							<ul class="category-list" >
-								<li><a href="category.html">Bus <span>193</span></a></li>
-								<li><a href="category.html">Cars <span>23</span></a></li>
-								<li><a href="category.html">Motobike  <span>33</span></a></li>
-								<li><a href="category.html">Rent a car <span>73</span></a></li>
-							</ul>
 						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-paw icon-bg-7"></i> 
-								<h4>Pets</h4>
-							</div>
-							<ul class="category-list" >
-								<li><a href="category.html">Cats <span>65</span></a></li>
-								<li><a href="category.html">Dogs <span>23</span></a></li>
-								<li><a href="category.html">Birds  <span>113</span></a></li>
-								<li><a href="category.html">Others <span>43</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-laptop icon-bg-8"></i> 
-								<h4>Services</h4>
-							</div>
-							<ul class="category-list" >
-								<li><a href="category.html">Cleaning <span>93</span></a></li>
-								<li><a href="category.html">Car Washing <span>233</span></a></li>
-								<li><a href="category.html">Clothing  <span>183</span></a></li>
-								<li><a href="category.html">Business <span>343</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /Category List -->
-					
-					
+					</div>
 				</div>
 			</div>
 		</div>
