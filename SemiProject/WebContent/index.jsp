@@ -654,7 +654,7 @@ $(function(){
                <!-- About -->
                <div class="block about">
                   <!-- footer logo -->
-                  <img src="images/logo-footer.png" alt="">
+                  <img src="images/main_logo2.png" alt="" style="width: 200px;">
                   <!-- description -->
                   <p class="alt-color">Lorem ipsum dolor sit amet, consectetur
                      adipisicing elit, sed do eiusmod tempor incididunt ut labore et
@@ -711,17 +711,11 @@ $(function(){
             <div class="col-sm-6 col-12">
                <!-- Copyright -->
                <div class="copyright">
-                  <p>Copyright © 2016. All Rights Reserved</p>
+                  <p>Copyright © 2020. 김승현 홍건우 김지윤 최환민 All Rights Reserved</p>
                </div>
             </div>
             <div class="col-sm-6 col-12">
                <!-- Social Icons -->
-               <ul class="social-media-icons text-right">
-                  <li><a class="fa fa-facebook" href=""></a></li>
-                  <li><a class="fa fa-twitter" href=""></a></li>
-                  <li><a class="fa fa-pinterest-p" href=""></a></li>
-                  <li><a class="fa fa-vimeo" href=""></a></li>
-               </ul>
             </div>
          </div>
       </div>

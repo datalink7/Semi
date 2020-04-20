@@ -27,8 +27,8 @@ public class RevwDao {
 		try {
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getRevwCont());
-			pstmt.setString(2, "admin");
-			pstmt.setString(3, dto.getRevwTitle());
+			pstmt.setString(2, "test1");
+			pstmt.setString(3, "null");
 			
 			pstmt.setString(4, dto.getRevwType());
 			pstmt.setInt(5, dto.getRevwStar());//star

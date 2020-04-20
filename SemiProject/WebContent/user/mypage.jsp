@@ -77,10 +77,10 @@ $(function(){
 									<a class="nav-link" href="../index.jsp"><b>Home</b></a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="#">예약</a>
+									<a class="nav-link" href="../reservation.jsp">예약</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="#">조회</a>
+									<a class="nav-link" href="../myReservation.jsp">조회</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" href="../user/mypage.jsp">마이페이지</a>

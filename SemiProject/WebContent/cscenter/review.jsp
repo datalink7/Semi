@@ -1,3 +1,7 @@
+<%@page import="review.data.RevwDto"%>
+<%@page import="review.data.RevwDao"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!doctype html>
@@ -8,6 +12,15 @@
 <html class="no-js" lang="">
 <!--<![endif]-->
 <head>
+
+<%
+	String revwNum=request.getParameter("revwNum");
+	RevwDao dao=new RevwDao();
+	RevwDto dto=new RevwDto();
+	dao.ReviewCount(revwNum);
+	dto=dao.getData(revwNum);
+%>
+
 <!-- SITE TITTLE -->
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,6 +66,16 @@
   cursor: pointer;
 }
 .starR.on{background-position:0 0;}
+.starS{
+  background: url('http://miuu227.godohosting.com/images/icon/ico_review.png') no-repeat right 0;
+  background-size: auto 100%;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  text-indent: -9999px;
+  cursor: pointer;
+}
+.starS.on{background-position:0 0;}
 .starRev{
 	height: 20px;
     margin-bottom: 10px;
@@ -66,12 +89,55 @@
 $(function(){
 	$('.starRev span').click(function() {
 		$(this).parent().children('span').removeClass('on');
+		$(this).parent().children('span').removeClass('starRon');
 		$(this).addClass('on').prevAll('span').addClass('on');
+		$(this).addClass('on').prevAll('span').addClass('starRon');
+		
+		$("#revwStar").val($('.starRon').length+1);
 		return false;
 	});
 });
 </script>
 </head>
+<%
+	List<RevwDto> list=dao.getReviewList(); 
+%>
+<!-- 페이징처리 -->
+<%
+	//db선언
+	RevwDao db=new RevwDao();
+
+	//변수 
+	int perPage=6;
+	int perBlock=5;
+	int totalCount;
+	int currentPage;
+	int totalPage;
+	int startPage;
+	int endPage;
+	int start;
+	int end;
+	List<RevwDto> list2=null;
+	
+	String pageNum=request.getParameter("pageNum");
+	if(pageNum==null)
+		currentPage=1;
+	else	
+		currentPage=Integer.parseInt(pageNum);
+		totalCount=db.getTotalCount();
+		totalPage=totalCount/perPage+(totalCount%perPage>0?1:0);
+		if(currentPage>totalPage)
+			currentPage=totalPage;
+		startPage=(currentPage-1)/perBlock*perBlock+1;
+		endPage=startPage+perBlock-1;
+		if(endPage>totalPage)
+			endPage=totalPage;
+		start=(currentPage-1)*perPage+1;
+		end=start+perPage-1;
+		if(end>totalCount)
+			end=totalCount;
+		list2=db.getPageDatas(start, end);
+%>
 <body class="body-wrapper">
 	<!-- 상단헤더고정 -->
 	<section>
@@ -169,199 +235,54 @@ $(function(){
 					<button type="button" class="btn btn-defalte" style="margin-top: -15px; margin-bottom: 12px; float: right;" data-toggle="modal" data-target="#reviewModal">후기등록하기</button>
 				</div>
 				<div class="row">
+					<%
+					 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					 	
+						int icon = 1;
+					 	for(int i=0; i<list.size(); i++)
+					 	{
+					 		if(i>5){
+					 			icon = i-icon+2;
+					 		}
+					 		RevwDto dt=list.get(i);
+					 %>
 					<!-- Category list -->
 					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
 						<div class="category-block">
 							<div class="header">
-								<i class="fa fa-laptop icon-bg-1"></i> 
-								<h4>택배후기</h4>
+								<i class="fa fa-laptop icon-bg-<%=icon%>"></i> 
+								<h4><%=dt.getRevwType()%></h4>
 							</div>
 							<ul class="category-list" >
 									<li style="padding-top: 0px;">
 										<div class="starSet">
-											<span class="starR on">별1</span> 
-											<span class="starR on">별2</span>
-											<span class="starR on">별3</span> 
-											<span class="starR on">별4</span> 
-											<span class="starR">별5</span> 
+											<%
+												for(int j=0; j<dt.getRevwStar(); j++){
+											%>
+												<span class="starS on">별</span> 
+											<%		
+												}
+											%>
+											<%
+												for(int j=0; j<5-dt.getRevwStar(); j++){
+											%>
+												<span class="starS">별</span> 
+											<%		
+												}
+											%>
 										</div>
 									</li>
 									<li style="height: 80px;">
-										후기입니다후기후기후기!!
+										<%=dt.getRevwCont() %>
 									</li>
-								<li><a href="#">admin작성<span>2020-04-19</span></a></li>
+								<li><a href="#"><%=dt.getUserId() %>작성<span><%=sdf.format(dt.getRevwDate())%></span></a></li>
 							</ul>
 						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-apple icon-bg-2"></i> 
-								<h4>택배후기</h4>
-							</div>
-							<ul class="category-list" >
-									<li style="padding-top: 0px;">
-										<div class="starSet">
-											<span class="starR on">별1</span> 
-											<span class="starR on">별2</span>
-											<span class="starR on">별3</span> 
-											<span class="starR">별4</span> 
-											<span class="starR">별5</span> 
-										</div>
-									</li>
-									<li style="height: 80px;">
-										후기입니다후기후기후기!!
-									</li>
-								<li><a href="#">admin작성<span>2020-04-19</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-home icon-bg-3"></i> 
-								<h4>퀵서비스 후기</h4>
-							</div>
-							<ul class="category-list" >
-									<li style="padding-top: 0px;">
-										<div class="starSet">
-											<span class="starR on">별1</span> 
-											<span class="starR on">별2</span>
-											<span class="starR on">별3</span> 
-											<span class="starR on">별4</span> 
-											<span class="starR">별5</span> 
-										</div>
-									</li>
-									<li style="height: 80px;">
-										후기입니다후기후기후기!!
-									</li>
-								<li><a href="#">admin작성<span>2020-04-19</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-shopping-basket icon-bg-4"></i> 
-								<h4>택배후기</h4>
-							</div>
-							<ul class="category-list" >
-									<li style="padding-top: 0px;">
-										<div class="starSet">
-											<span class="starR on">별1</span> 
-											<span class="starR on">별2</span>
-											<span class="starR on">별3</span> 
-											<span class="starR">별4</span> 
-											<span class="starR">별5</span> 
-										</div>
-									</li>
-									<li style="height: 80px;">
-										후기입니다후기후기후기!!
-									</li>
-								<li><a href="#">admin작성<span>2020-04-19</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-briefcase icon-bg-5"></i> 
-								<h4>택배후기</h4>
-							</div>
-							<ul class="category-list" >
-									<li style="padding-top: 0px;">
-										<div class="starSet">
-											<span class="starR on">별1</span> 
-											<span class="starR on">별2</span>
-											<span class="starR on">별3</span> 
-											<span class="starR on">별4</span> 
-											<span class="starR">별5</span> 
-										</div>
-									</li>
-									<li style="height: 80px;">
-										후기입니다후기후기후기!!
-									</li>
-								<li><a href="#">admin작성<span>2020-04-19</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-car icon-bg-6"></i> 
-								<h4>퀵서비스 후기</h4>
-							</div>
-							<ul class="category-list" >
-									<li style="padding-top: 0px;">
-										<div class="starSet">
-											<span class="starR on">별1</span> 
-											<span class="starR on">별2</span>
-											<span class="starR on">별3</span> 
-											<span class="starR on">별4</span> 
-											<span class="starR on">별5</span> 
-										</div>
-									</li>
-									<li style="height: 80px;">
-										후기입니다후기후기후기!!
-									</li>
-								<li><a href="#">admin작성<span>2020-04-19</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-paw icon-bg-7"></i> 
-								<h4>퀵서비스 후기</h4>
-							</div>
-							<ul class="category-list" >
-									<li style="padding-top: 0px;">
-										<div class="starSet">
-											<span class="starR on">별1</span> 
-											<span class="starR">별2</span>
-											<span class="starR">별3</span> 
-											<span class="starR">별4</span> 
-											<span class="starR">별5</span> 
-										</div>
-									</li>
-									<li style="height: 80px;">
-										후기입니다후기후기후기!!
-									</li>
-								<li><a href="#">admin작성<span>2020-04-19</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /Category List -->
-					<!-- Category list -->
-					<div class="col-lg-3 offset-lg-0 col-md-5 offset-md-1 col-sm-6 col-6">
-						<div class="category-block">
-							<div class="header">
-								<i class="fa fa-laptop icon-bg-8"></i> 
-								<h4>퀵서비스 후기</h4>
-							</div>
-							<ul class="category-list" >
-									<li style="padding-top: 0px;">
-										<div class="starSet">
-											<span class="starR on">별1</span> 
-											<span class="starR on">별2</span>
-											<span class="starR on">별3</span> 
-											<span class="starR">별4</span> 
-											<span class="starR">별5</span> 
-										</div>
-									</li>
-									<li style="height: 80px;">
-										후기입니다후기후기후기!!
-									</li>
-								<li><a href="#">admin작성<span>2020-04-19</span></a></li>
-							</ul>
-						</div>
-					</div> <!-- /Category List -->
-					
+					</div>
+					<% 
+						icon++;
+						}
+					%>
 					
 				</div>
 			</div>
@@ -372,6 +293,7 @@ $(function(){
 
 <!-- review Modal -->
 <div class="modal fade" id="reviewModal" role="dialog">
+<form action="/SemiProject/review/action/insertaction.jsp" method="post">
 	<div class="modal-dialog modal-md" style="top: 5%;">
 		<div class="modal-content">     
 			<div class="modal-header">
@@ -384,22 +306,24 @@ $(function(){
 						<tr>
 							<td style="width: 26%;">후기종류</td>
 							<td>
-								<select class="form-control"  id="" name="" style="height: 40px; margin-top: 4px;">
-									<option value="">택배후기</option>
-									<option value="">퀵서비스후기</option>
-									<option value="">반값예약후기</option>     
+								<select class="form-control"  id="revwType" name="revwType" style="height: 40px; margin-top: 4px;">
+									<option value="택배후기">택배후기</option>
+									<option value="퀵서비스후기">퀵서비스후기</option>
+									<option value="반값예약후기">반값예약후기</option>     
 								</select>
 							</td>
 						</tr>
 						<tr>
 							<td style="width: 26%;">후기</td>
-							<td><textarea class="form-control" rows="5" id="" style="height: 200px;"></textarea></td>
+							<td><textarea class="form-control" rows="5" id="revwCont" name="revwCont"
+							style="height: 200px;" required="required"></textarea></td>
 						</tr>  
 						<tr>
 							<td style="width: 26%;">별점</td>
 								<td>
 									<div class="starRev">
-										<span class="starR on">별1</span>
+										<input type="hidden" id="revwStar" name="revwStar" value="" >
+										<span class="starR on starRon">별1</span>
 										<span class="starR">별2</span>
 										<span class="starR">별3</span> 
 										<span class="starR">별4</span> 
@@ -411,10 +335,12 @@ $(function(){
 				</table>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" style="width: 124px; height: 50px; margin-left: auto">후기등록</button>
+				<button type="submit" class="btn btn-danger" 
+				style="width: 124px; height: 50px; margin-left: auto">후기등록</button>
 			</div>
 		</div>
 	</div>
+	</form>
 </div>
 
 

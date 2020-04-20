@@ -7,12 +7,12 @@
 	request.setCharacterEncoding("utf-8");
 
 	String revwType=request.getParameter("revwType");
-	String revwTitle=request.getParameter("revwTitle");
 	String revwCont=request.getParameter("revwCont");
+	String revwStar=request.getParameter("revwStar");
 	
 	System.out.println(revwType);
-	System.out.println(revwTitle);
 	System.out.println(revwCont);
+	System.out.println(revwStar);
 	
 %>
 
@@ -23,7 +23,7 @@
 <%
 int revwNum=dto.getRevwNum();
 dao.insertReview(dto);
-response.sendRedirect("../form/revwlist.jsp?revwNum="+revwNum);
+response.sendRedirect("../../cscenter/review.jsp?revwNum="+revwNum);
 %>
 <meta charset="UTF-8">
 <title>Insert title here</title>

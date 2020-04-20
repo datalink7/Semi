@@ -53,6 +53,13 @@ $(function(){
 		$(this).css("background-color","white");
 		$(this).css("color","black");
 	});
+	
+	$('#qnaTable tbody').on('dblclick', 'tr', function () {
+	    $("#qnaModal").modal("show");
+// 	    var data = otable.row( this ).data();
+// 	    var col1 = data.col1;
+// 	    var col2 = data.col2;
+	});
 });
 </script>
 </head>
@@ -164,7 +171,7 @@ $(function(){
 		<!-- Container Start -->
 		<div class="container">
 			<button type="button" class="btn btn-defalte" style="margin-top: -15px; margin-bottom: 12px; float: right;" data-toggle="modal" data-target="#qnaModal">문의하기</button>
-			<table class="table table-hover">
+			<table id="qnaTable" class="table table-hover">
 				<thead>
 					<tr>
 						<th>글번호</th>

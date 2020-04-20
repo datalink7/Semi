@@ -158,7 +158,7 @@ $(function(){
 				<div class="col-md-12">
 					<!-- Header Contetnt -->
 					<div class="content-block">
-						<h1>Q & A</h1>
+						<h1>예 약</h1>
 						<p>Quick Box</p>
 						
 					</div>
