@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<title>Insert title here</title>
+<title>택배 예약</title>
 </head>
 <!-- 예약
 시작날짜 종료날짜 input type=date
@@ -16,8 +16,11 @@
 비밀번호 설정
  -->
 <%
+	String resvType=request.getParameter("resvType");
 	String mapNum=request.getParameter("mapNum");
 	String boxCode=request.getParameter("boxCode");
+	String resvStDate=request.getParameter("resvStDate");
+	String resvEdDate=request.getParameter("resvEdDate");
 	String userId;
 	if((String)session.getAttribute("userId")==null)
 		userId="admin";
@@ -26,12 +29,26 @@
 %>
 <script>
 $(function() {
-	var date = new Date();
-	var yyyy = date.getFullYear();
-	var mm = date.getMonth()+1 > 9 ? date.getMonth()+1 : '0' + (date.getMonth()+1);
-	var dd = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
-	
-	$("input[type='date']").val(yyyy+"-"+mm+"-"+dd);
+// 	var date = new Date();
+// 	var yyyy = date.getFullYear();
+// 	var mm = date.getMonth()+1 > 9 ? date.getMonth()+1 : '0' + (date.getMonth()+1);
+// 	var dd = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
+// 	$("#resvStDate").val(yyyy+"-"+mm+"-"+dd);
+// 	$("#resvEdDate").val(yyyy+"-"+mm+"-"+dd);
+// 	$("input[type='date']").val(yyyy+"-"+mm+"-"+dd);
+	$("#resvStDate").val("<%=resvStDate%>");
+	$("#resvEdDate").val("<%=resvEdDate%>");
+	if(<%=resvType%>==1){
+		$(".resvType").text("보관함 예약")
+		$("#resvType").val("보관함 예약");
+	}else if(<%=resvType%>==2){
+		$(".resvType").text("반값 택배 예약")
+		$("#resvType").val("반값 택배 예약");
+	}else if(<%=resvType%>==3){
+		$(".resvType").text("일반 택배 예약")
+		$("#resvType").val("일반 택배 예약");
+	}
+<%-- 	$("option[resvType="+<%=resvType%>+"]").attr("selected","selected"); --%>
 });
 
 
@@ -45,18 +62,19 @@ $(function() {
 	<table class="table table-bordered">
 		<tr>
 			<td><%=Integer.parseInt(boxCode.substring(3))%>번 보관함<input type="hidden" name="boxCode" value=<%=boxCode %>></td><!-- boxCode로 나중에 수정 -->
-			<td>시작일자:<input type="date" id="resvStDate" style="width:150px" value="2020-04-10"></td>
-			<td>종료일자:<input type="date" id="resvEdDate" name="resvEdDate" style="width:150px"></td>
+			<td>시작일자:<input type="date" id="resvStDate" name="resvStDate" style="width:150px" readonly="readonly"></td>
+			<td>종료일자:<input type="date" id="resvEdDate" name="resvEdDate" style="width:150px" readonly="readonly"></td>
 		</tr>
 		<tr>
 			<td>
-				<select name="resvType">
-					<option hidden disabled="disabled" selected="selected">서비스 선택하기</option>
-					<option>보관함 예약</option>
-					<option>반값 예약</option>
-					<option>일반택배 예약</option>
-					<option>퀵 예약</option>
-				</select>
+				<input type="hidden" name="resvType" id="resvType"><span class="resvType"></span>
+<!-- 				<select name="resvType"> -->
+<!-- 					<option hidden disabled="disabled" selected="selected">서비스 선택하기</option> -->
+<!-- 					<option resvType="1">보관함 예약</option> -->
+<!-- 					<option resvType="2">반값 예약</option> -->
+<!-- 					<option resvType="3">일반택배 예약</option> -->
+<!-- 					<option resvType="4">퀵 예약</option> -->
+<!-- 				</select> -->
 			</td>
 			<td>
 				<select name="objType">
@@ -72,7 +90,7 @@ $(function() {
 			</td>
 		</tr>
 		<tr>
-			<td>비밀번호 설정: <input type="password" name="boxPwd"></td>
+			<td>비밀번호 설정: <input type="password" name="boxPwd" required="required"></td>
 			<td>사이즈 입력: <input type="text" id="objSize" name="objSize" placeholder="(가로)*(세로)*(높이)로 입력"></td>
 			<td>
 			

@@ -6,7 +6,7 @@
 	//userid, userpwd, idsave
 	String userId=request.getParameter("userId");
 	String userPwd=request.getParameter("userPwd");
-	String idsave=request.getParameter("idsave");
+	String idsave=request.getParameter("userIdSave");
 	
 	System.out.println(userId);
 	System.out.println(userPwd);
@@ -18,6 +18,8 @@
 	boolean bLogin=dao.isLogin(userId,userPwd);
 	//true 면 세션에 loginok,checkok,idok 저장 후
 	//이동 : successpage.jsp 를 메인 위치에
-	//false 면 스크립트로 경고 후 이전페이지 	
+	//false 면 스크립트로 경고 후 이전페이지 
+	System.out.println(bLogin?"yes":"no");
 %>
 <data><%=bLogin?"yes":"no"%></data>
+

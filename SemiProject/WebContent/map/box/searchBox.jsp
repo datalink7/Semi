@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<title>Insert title here</title>
+<title>보관함 선택</title>
 </head>
 <style>
 	.boxtable{
@@ -27,8 +27,8 @@
 	}
 	.boxdisplay{
 		position:absolute;
-		left:800px;
-		top:50px;
+		left:50px;
+		top:20px;
 		width:500px;
 	}
 	.boxdisplay tr td{
@@ -37,24 +37,8 @@
 		height:50px;
 		margin-right: 5px;
 	}
-	.box[boxUseYn="0"]:hover{
+	.box:hover{
 		background-image: url('../image/selecteddoor.png');background-size: cover;
-	}
-	.info{
-		position:absolute;
-		border:1px solid grey;
-		background-color: rgba(229,216,92,0.5);
-		width: 100px;
-		height: 100px;
-		left:0px;
-		top:0px;		
-
-	}
-	.closeinfo{
-		position:absolute;
-		left:90px;
-		top:0px;
-		cursor: pointer;
 	}
 	.resvBox{
 		position:absolute;
@@ -62,15 +46,12 @@
 		left:0px;
 		top:80px;
 	}
-	
+	.select{
+		background-image: url('../image/useddoor.png');background-size: cover;
+	}
 	.box{
 		cursor: pointer;
-	}
-	.box[boxUseYn="0"]{
 		background-image: url('../image/door.PNG');background-size: cover;
-	}
-	.box[boxUseYn="1"]{
-		background-image: url('../image/useddoor.png');background-size: cover;
 	}
 	.boxTable tr th{
 		text-align: center;
@@ -83,110 +64,220 @@
 		margin-left:-8px;
 		margin-right: -8px;
 	}
+	.inputDetail{
+		position: absolute;
+		left: 300px;
+		top:50px; 
+		
+	}
+	table.input{
+		border: none;
+	}
 </style>
-<script type="text/javascript">
-$(function() {
-// 	$(".box[boxUseYn=1]").css("color","black");
-	$(".info").hide();
-	$(".box").click(function() {
-		$(".info").hide();
-		$(".info[boxCode="+$(this).attr("boxCode")+"]").show();
-		x = event.pageX;
-		y = event.pageY; 
-		$(".info").css("top",y-50).css("left",x-800);
-    });
-	$(".closeinfo").click(function() {
-		$(".info").hide();
-	});
-});
-</script>
 <%
+	String send=request.getParameter("send");
+	String resvType=request.getParameter("resvType");
 	String mapNum=request.getParameter("mapNum");
 	String placeCode=request.getParameter("placeCode");
 	String placeName=request.getParameter("placeName");
+	String resvStDate=request.getParameter("resvStDate");
+	String resvEdDate=request.getParameter("resvEdDate");
 	BoxDao dao=new BoxDao();
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	int cntBox=0;
 	boolean all=false;
-	List<BoxDto> list=dao.selectBox(placeCode,false);
+	List<BoxDto> list=dao.selectBox(placeCode,false,resvStDate,resvEdDate);
 %>
-<body>
-<div>
-<table class="boxTable table table-striped" style="width:700px;" >
-<caption><h3><%=placeName %></h3></caption>
-
-<tr>
-	<th width="50">보관함 번호</th><th width="50">지점명</th><th width="50">예약자명</th><th width="50">보관함 사이즈</th><th width="50">비고</th><td width="50"> </td>
-</tr>
 <%
-	if(list.size()==0){
+	String userId;
+	if((String)session.getAttribute("userId")==null)
+		userId="admin";
+	else
+		userId=(String)session.getAttribute("userId");
 %>
-	<tr>
-		<td colspan="7">
-			검색 결과 없음
-		</td>
-	</tr>
+
+<script type="text/javascript">
+$(function() {
+
+	$(document).on("click",".box[usable='사용가능']",function(){
+		boxcode=$(this).attr("boxCode");
+		boxsize=$(this).attr("boxSize");
+		console.log($(this).attr("usable"));
+		console.log(boxcode);
+		console.log(boxsize);
 		
+		$("input.boxCode").val(boxcode);
+		$("input#objSize").val(boxsize);
+		$("span.boxNum").text(parseInt(boxcode.substring(3))+"번 보관함");
+		$(".btnAddr").attr("boxAddr","<%=dao.getBoxAddr(mapNum) %> "+parseInt(boxcode.substring(3)) +"번 보관함");
+		$(".btnAddr").attr("sendBoxCode",boxcode);
+		$(".btnAddr").attr("getBoxCode",boxcode);door
+// 		$(".box").removeClass("select");
+// 		$(this).addClass("select");
+// 		console.log($(".btnAddr").attr("boxAddr"));
+	});
+	$(".btnSendAddr").click(function() {
+		var sendAddr=$(this).attr("boxAddr");
+		var sendBoxCode=$(this).attr("sendBoxCode");
+		console.log(sendAddr);
+		console.log(sendBoxCode);
+		$(opener.parent.resvSendAddr).val(sendAddr);
+		$(opener.parent.boxCode).val(sendBoxCode);
+		window.close();
+	});
+	$(".btnGetAddr").click(function() {
+		var getAddr=$(this).attr("boxAddr");
+		var getBoxCode=$(this).attr("getBoxCode");
+		$(opener.parent.resvGetAddr).val(getAddr);
+		$(opener.parent.getBoxCode).val(getBoxCode);
+		$(opener.parent.getStDate).val($(this).attr("getStDate"));
+		$(opener.parent.getEdDate).val($(this).attr("getEdDate"));
+		window.close();
+	});
 	<%
-	}else{%>
-		<tr><td colspan="6"><div class="wrapper"><table class="table table-striped">
-	
-	
-	<%
-// 		for(BoxDto dto:list){
-		for(int i=0;i<list.size();i++){
-		String boxCode=list.get(i).getBoxCode();
-		placeCode=list.get(i).getPlaceCode();
-		String boxSize=list.get(i).getBoxSize();
-		String boxEtc=list.get(i).getBoxEtc();
-		String boxUseYn=list.get(i).getBoxUseYn();
-		String userId=list.get(i).getUserId();
-		int boxIdx=Integer.parseInt(boxCode.substring(3));
+	List<BoxDto> list1=dao.ableResv(placeCode, resvStDate, resvEdDate);	
+	for(BoxDto dto:list1){
+		%>
+		$(".box[boxCode='<%=dto.getBoxCode()%>']").css({"background-image":"url('../image/useddoor.png')"}); 	
+		$(".box[boxCode='<%=dto.getBoxCode()%>']").attr("usable","사용불가");
+		<%
+	}
 	%>
-		<tr align="center">
+	$("#resvStDate").val("<%=resvStDate%>");
+	$("#resvEdDate").val("<%=resvEdDate%>");
+<%-- 	if(<%=resvType%>==1){ --%>
+// 		$(".resvType").text("보관함 예약")
+// 		$("#resvType").val("보관함 예약");
+<%-- 	}else if(<%=resvType%>==2){ --%>
+// 		$(".resvType").text("반값 택배 예약")
+// 		$("#resvType").val("반값 택배 예약");
+<%-- 	}else if(<%=resvType%>==3){ --%>
+// 		$(".resvType").text("택배 예약")
+// 		$("#resvType").val("택배 예약");
+// 	}
+	
+});
+
+</script>
+<body>
+
+<!-- 보관함 4*5 -->
+<div class="boxdisplay">
+	<table>
+		<h3><%=placeName %></h3><span class="resvType"></span>
+		<%
+			all=true;
+			List<BoxDto> allList=dao.selectBox(placeCode,all,resvStDate,resvEdDate);
+			cntBox=allList.size();
+			if(allList.size()!=0){
+		%>
+				<caption style="text-align: right;">보관함 총 <%=cntBox %>개 중<br> <%=list.size() %>개 사용가능</caption>
+		<%
+			}
+			for(int i=0;i<allList.size();i++){
+				if((i+1)%4==1){%>
+					<tr>
+				<%}%>
+					<!-- 보관함 박스들 -->
+					<td align="center" class="box" boxSize=<%=allList.get(i).getBoxSize() %>
+					boxCode=<%=allList.get(i).getBoxCode()%> boxUseYn=<%=allList.get(i).getBoxUseYn() %> usable='사용가능'><%=i+1%></td>
+				<%
+				if((i+1)%4==0){
+				%></tr><%
+				}
+			}
+			%>
+	</table>
+</div>
+
+<div class="inputDetail">
+<form action="../../resv/reservationAction.jsp" method="post">
+	<input type="hidden" name="mapNum" value=<%=mapNum %>>
+	<input type="hidden" name="userId" value=<%=userId %>>
+	<br><br>
+	<table class="input" style="width:300px">
+		<tr><td align="right"><h4><span class="boxNum"></span></h3></td></tr>
+		<tr >
+			<td><input type="hidden" class="boxCode" name="boxCode" value=''></td>
 			<td>
-				<%=boxIdx%></td><td><%=list.get(i).getPlaceName()%></td><td><%=userId%></td>
-				<td><%=boxSize%></td><td><%=boxEtc%></td><td><BUTTON type="button" onclick="location.href='../../resv/reservationForm.jsp?mapNum=<%=mapNum%>&boxCode=<%=boxCode%>'">예약</BUTTON><br>
+				<input type="hidden" name="resvType" id="resvType" value=<%=resvType %>><span class="resvType"></span>
 			</td>
 		</tr>
-		<%
-		}%>
-		</table></div></td></tr>
-		<%
-	}
-%>
-</table>
-</div>
-<div class="boxdisplay">
-<table>
-<%
-	all=true;
-	List<BoxDto> allList=dao.selectBox(placeCode,all);
-	cntBox=allList.size();
-	if(allList.size()!=0){
-%>
-		<caption style="text-align: right;"><span>보관함 총 <%=cntBox %>개 중<br> <%=list.size() %>개 사용가능</span></caption>
-<%
-	}
-	for(int i=0;i<allList.size();i++){
-		if((i+1)%4==1){%>
-			<tr>
-		<%}%>
-			<div class="info" boxCode=<%=allList.get(i).getBoxCode()%>>
-				<b><%=i+1 %>번 보관함<br>
-				크기: <%=allList.get(i).getBoxSize() %><br>
-				사용: <%=allList.get(i).getBoxUseYn().equals("1")?"사용불가":"사용가능"%></b>
-<!-- 				<span class="resvBox" >예약</span> -->
-				<span class="closeinfo">X</span>
-			</div>
-			<td align="center" class="box" boxCode=<%=allList.get(i).getBoxCode()%> boxUseYn=<%=allList.get(i).getBoxUseYn() %> style=""><%=i+1%></td>
-		<%
-		if((i+1)%4==0){
-		%></tr><%
-		}
-	}
-	%>
-</table>
+		<tr>
+			<td>
+				<div class="input-group">
+	   				<span class="input-group-addon">시작일자</span>
+					<input type="date" class="form-control" id="resvStDate" name="resvStDate" readonly="readonly">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="input-group">
+	   				<span class="input-group-addon">종료일자</span>
+					<input type="date" class="form-control" id="resvEdDate" name="resvEdDate" readonly="readonly">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<select name="objType" class="form-control">
+					<option hidden disabled="disabled" selected="selected">물건 종류</option>
+					<option>옷</option>
+					<option>전자기기</option>
+					<option>음식류</option>
+					<option>서적류</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="input-group">
+	   				<span class="input-group-addon">물건 수량</span>
+					<input type="number" class="form-control" name="objCnt" value=1>
+				</div>
+			</td>
+
+		</tr>
+		
+		<tr>
+			<td>
+				<div class="input-group">
+	   				<span class="input-group-addon">사이즈 입력</span>
+					<input type="text" class="form-control" id="objSize" name="objSize" placeholder="(가로)*(세로)*(높이) 입력">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<%if(!resvType.equals("2")){ %>
+			<td>
+				<div class="input-group">
+	   				<span class="input-group-addon">비밀번호 설정</span>
+					<input type="password" class="form-control" name="boxPwd" maxlength="4" placeholder="4자리" required="required">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<%} %>
+			<td colspan="2" align="center">
+			<%
+				if(resvType.equals("1")){
+				%>
+					<button type="submit" class="btn btn-default">예약하기</button>
+				<%}else{
+					if(send.equals("1")){
+				%>
+						<BUTTON type="button" class="btnAddr btnSendAddr btn btn-default" boxAddr='' sendBoxCode=''>선택</BUTTON>
+					<%}else{ %>
+						<BUTTON type="button" class="btnAddr btnGetAddr btn btn-default" boxAddr='' getStDate=<%=request.getParameter("resvStDate") %> getEdDate=<%=request.getParameter("resvEdDate") %> getBoxCode=''>선택</BUTTON>
+					<%} %>
+				<%} %>
+				<button type="button" class="btn btn-default" onclick="window.close()">취소</button>
+			</td>
+		</tr>
+	</table>
+</form>
+
 </div>
 </body>
 </html>

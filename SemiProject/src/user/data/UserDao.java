@@ -53,7 +53,7 @@ public class UserDao {
 					System.out.println("아이디 중복 - 회원가입 불가능");
 				} else {
 					System.out.println("회원가입 가능");
-					if(state == "join") {
+					if(state.equals("join")) {
 						insertUser(dto);
 					}
 				}

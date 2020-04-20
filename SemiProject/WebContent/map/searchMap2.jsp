@@ -19,17 +19,16 @@
     <!-- 오버레이 이미지를 나타내기 위한 스타일 작업 원하는 모양으로 변경하여 사용-->
 .customoverlay {position:relative;bottom:85px; border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;float:left;}
 .customoverlay:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-.customoverlay span.openwin {margin-top:-92px;display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #E5D85C url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+.customoverlay a {margin-top:-92px;display:block;text-decoration:none;color:#000;text-align:center;border-radius:6px;font-size:14px;font-weight:bold;overflow:hidden;background: #E5D85C url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
 .customoverlay .title {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:14px;font-weight:bold;}
 .customoverlay .content {display:block;text-align:center;background:#fff;margin-right:35px;padding:10px 15px;font-size:10px;}
 .customoverlay:after {content:'';position:absolute;margin-left:-12px;left:50%;bottom:22px;width:22px;height:12px;background:url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-
     div.absolute { 
-        position: relative;
-        top : 40px;
-		left : 60%;
+        position: absolute;
+        top : 85%;
+        left : 25%;
         right : 25%;
-        width : 50%;
+        width : 100%;
         z-index:6
     }
 	div.customoverlay{
@@ -54,24 +53,10 @@
 	BoxDao bdao=new BoxDao();
 	
 %>
-<script type="text/javascript">
-$(function() {
-	
-	$(document).on("click",".openwin",function(){
-		console.log($(this).attr("mapNum"));
-		mapNum=$(this).attr("mapNum");
-		placeCode=$(this).attr("placeCode");
-		placeName=$(this).attr("placeName");
-		window.open("../map/box/searchBox.jsp?mapNum="+mapNum+"&placeCode="+placeCode+"&placeName="+placeName+"&resvType=<%=resvType%>&resvStDate=<%=resvStDate%>&resvEdDate=<%=resvEdDate%>&send=<%=sendType%>","","width=700px,height=500px,left=600px,top=100px");
-	});
-});
-</script>
-<body style='overflow:hidden !important;'>
-
-<!-- 위치 검색창 -->
-<div class = "absolute">	
-	<input type='text' class='input_text' id= "inputaddress" placeholder="위치명 검색" onKeypress="javascript:if(event.keyCode==13) {searchMap()}"/>
-	<button type='submit' class='sch_smit' onclick="searchMap()">검색</button>
+<body>
+<div class = "absolute">
+	        <input type='text' class='input_text' id= "intputaddress" placeholder="위치명 검색" onKeypress="javascript:if(event.keyCode==13) {searchMap()}"/>
+        <button type='submit' class='sch_smit' onclick="searchMap()">검색</button>
 </div>
 
 <!-- <button type="button" class="btn btn-danger" onclick="location.href='../resv/resvMain.jsp'">취소</button> -->
@@ -84,7 +69,7 @@ $(function() {
 <%-- <input type="hidden" name="resvEdDate" value=<%=resvEdDate %>> --%>
 <%-- <input type="hidden" name="send" value=<%=sendType %>> --%>
 <!-- </form> -->
-	<div id="map" style="width: 600px; height: 400px;"></div>
+	<div id="map" style="width: 500px; height: 500px;"></div>
 	<script>
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
 		
@@ -115,6 +100,8 @@ $(function() {
 		
 		// 장소 검색 객체를 생성합니다
 		var ps = new kakao.maps.services.Places(); 
+		// input id값을 가져와서 inputaddress에 값에 넣는다.
+// 		let inputaddress = jQuery('#intputaddress');
 
 		//마커 생성
 		window.onload = setMarker();
@@ -174,11 +161,11 @@ $(function() {
 					// 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 
 					var content = '<div class="customoverlay">'
-							+'<span class="openwin" mapNum='+position[i].mapNum+' placeCode='+position[i].placeCode+' placeName='+position[i].placeName+'>'
+// 							+'<span class="openwin" mapNum='+position[i].mapNum+' placeCode='+position[i].placeCode+' placeName='+position[i].placeName+'>'
 					
-// 							+ '<a class="openwin" href="../map/box/searchBox.jsp?mapNum='+position[i].mapNum+'&placeCode='+position[i].placeCode
-<%-- 								+'&placeName='+position[i].placeName+'&resvType='+<%=resvType%>+'&send='+<%=sendType%> --%>
-<%-- 								+'&resvStDate=<%=resvStDate%>&resvEdDate=<%=resvEdDate%>">' --%>
+							+ '<a class="openwin" href="../map/box/searchBox.jsp?mapNum='+position[i].mapNum+'&placeCode='+position[i].placeCode
+								+'&placeName='+position[i].placeName+'&resvType='+<%=resvType%>+'&send='+<%=sendType%>
+								+'&resvStDate=<%=resvStDate%>&resvEdDate=<%=resvEdDate%>">'
 							+ '<span class="title">' + position[i].placeName +'<br>'
 							+ '<span style="font-weight:normal;font-size:9pt;">남은 박스 : '+position[i].free+'개</span>'+ '  </a>'
 							+ '</div>';
@@ -233,9 +220,9 @@ $(function() {
 		function searchMap()
 		{
 		    // 키워드로 장소를 검색합니다
-		    ps.keywordSearch($('#inputaddress').val(),placesSearchCB); 
+		    ps.keywordSearch($('#intputaddress').val(),placesSearchCB); 
 		    // 입력 박스를 초기화시킨다.
-		    $('#inputaddress').val('');
+		    $('#intputaddress').val('');
 		}
 
 	</script>

@@ -2,7 +2,7 @@ package resv.data;
 
 import java.sql.Timestamp;
 
-public class ResvDto {
+public class MyResvDto {
 	private String resvNum;
 	private String resvType;
 	private String boxCode;
@@ -11,26 +11,15 @@ public class ResvDto {
 	private String objSize;
 	private String objCnt;
 	private String resvPrice;
-	private String resvStDate;
-	private String resvEdDate;
+	private Timestamp resvStDate;
+	private Timestamp resvEdDate;
 	private String userId;
 	private String resvCancelYn;
 	private String resvEndYn;
+	private String resvOverPrice;
+	private Timestamp resvDate;
 	private String resvSendAddr;
 	private String resvGetAddr;
-	
-	public String getResvSendAddr() {
-		return resvSendAddr;
-	}
-	public void setResvSendAddr(String resvSendAddr) {
-		this.resvSendAddr = resvSendAddr;
-	}
-	public String getResvGetAddr() {
-		return resvGetAddr;
-	}
-	public void setResvGetAddr(String resvGetAddr) {
-		this.resvGetAddr = resvGetAddr;
-	}
 	public String getResvNum() {
 		return resvNum;
 	}
@@ -79,16 +68,16 @@ public class ResvDto {
 	public void setResvPrice(String resvPrice) {
 		this.resvPrice = resvPrice;
 	}
-	public String getResvStDate() {
+	public Timestamp getResvStDate() {
 		return resvStDate;
 	}
-	public void setResvStDate(String resvStDate) {
+	public void setResvStDate(Timestamp resvStDate) {
 		this.resvStDate = resvStDate;
 	}
-	public String getResvEdDate() {
+	public Timestamp getResvEdDate() {
 		return resvEdDate;
 	}
-	public void setResvEdDate(String resvEdDate) {
+	public void setResvEdDate(Timestamp resvEdDate) {
 		this.resvEdDate = resvEdDate;
 	}
 	public String getUserId() {
@@ -100,8 +89,8 @@ public class ResvDto {
 	public String getResvCancelYn() {
 		return resvCancelYn;
 	}
-	public void setResvCancelYn(String resvCancleYn) {
-		this.resvCancelYn = resvCancleYn;
+	public void setResvCancelYn(String resvCancelYn) {
+		this.resvCancelYn = resvCancelYn;
 	}
 	public String getResvEndYn() {
 		return resvEndYn;
@@ -109,10 +98,10 @@ public class ResvDto {
 	public void setResvEndYn(String resvEndYn) {
 		this.resvEndYn = resvEndYn;
 	}
-	public int getResvOverPrice() {
+	public String getResvOverPrice() {
 		return resvOverPrice;
 	}
-	public void setResvOverPrice(int resvOverPrice) {
+	public void setResvOverPrice(String resvOverPrice) {
 		this.resvOverPrice = resvOverPrice;
 	}
 	public Timestamp getResvDate() {
@@ -121,6 +110,16 @@ public class ResvDto {
 	public void setResvDate(Timestamp resvDate) {
 		this.resvDate = resvDate;
 	}
-	private int resvOverPrice;
-	private Timestamp resvDate;
+	public String getResvSendAddr() {
+		return resvSendAddr;
+	}
+	public void setResvSendAddr(String resvSendAddr) {
+		this.resvSendAddr = resvSendAddr;
+	}
+	public String getResvGetAddr() {
+		return resvGetAddr;
+	}
+	public void setResvGetAddr(String resvGetAddr) {
+		this.resvGetAddr = resvGetAddr;
+	}
 }

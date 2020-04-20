@@ -14,7 +14,7 @@
 		$("#loginBtn").click(function(){
 			var userId=$("#userId").val();
 			var userPwd=$("#userPwd").val();
-			var idSave=$("#idSave").is(":checked");
+			var userIdSave=$("#userIdSave").is(":checked");
 			
 			if(userId.length==0){
 				alert("아이디를 입력해주세요.");
@@ -29,15 +29,19 @@
 			$.ajax({
 				type:"post",
 				url:"/SemiProject/login/loginaction.jsp",
-				datatype:"xml",
+				dataType:"xml",
 				data:{
 					"userId":userId,
 					"userPwd":userPwd,
-					"idSave":idSave
+					"userIdSave":userIdSave
 				},
 				success:function(data){
-					//alert($(data).text());
+					console.log(data);
 					if($(data).text()=='yes'){
+						console.log($(data).text());
+						$("#loginModal").modal('hide');
+						$("#loginLi").css("display", "none");
+						$("#joinLi").css("display", "none");
 						location.href='/SemiProject/index.jsp';
 					}else{
 						alert("로그인 정보를 정확히 입력해주세요.");
@@ -104,42 +108,38 @@
 </head>
 <% %>
 <body>
-<!-- 
-	<form method="post" id="authForm"
-		action="https://www.tistory.com/auth/login">
-		<input type="hidden" name="redirectUrl"
-			value="https://blogpack.tistory.com/manage">
-		<fieldset>
-			<legend class="screen_out">로그인 정보 입력폼</legend>
-			<div class="box_login">
-				<div class="inp_text">
-					<label for="loginId" class="screen_out">아이디</label> <input
-						type="text" id="userId" name="userId" placeholder="ID">
-				</div>
-				<div class="inp_text">
-					<label for="loginPw" class="screen_out">비밀번호</label> <input
-						type="password" id="userPwd" name="userPwd" placeholder="Password">
-				</div>
-			</div>
-			<button type="button" id="loginBtn" class="btn_login">로그인</button>
-			<div class="login_append">
-				<div class="inp_chk">
-					체크시 checked 추가
-					<input type="checkbox" id="userIdSave" class="inp_radio" name="keepLogin"> 
-					<label for="keepLogin" class="lab_g">아이디 저장</label>
-				</div>
-				<span class="txt_find"> 
-				<a href="/SemiProject/login/idSearch.jsp" class="link_find" id="id_find">아이디 찾기</a>
-                /
-                <a href="/member/find/password" class="link_find" id="pwd_find">비밀번호 찾기</a>
-                /
-				<a href="/SemiProject/user/userform.jsp" class="link_find">회원가입</a>
-				</span>
-			</div>
-		</fieldset>
-	</form> -->
 
-	<div class="modal-body">
+<!-- Login Modal -->
+<div class="modal-body">
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="userId">아이디:</label>
+			<div class="col-sm-12">
+				<input type="text" class="form-control" id="userId" placeholder="Enter userId" name="userId">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-4" for="userPwd">비밀번호:</label>
+			<div class="col-sm-12">
+				<input type="password" class="form-control" id="userPwd" placeholder="Enter password" name="userPwd">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="checkbox">
+					<label><input type="checkbox" id="userIdSave" name="remember"> 아이디 저장</label>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" style="width: 143px; height: 50px;">아이디 찾기</button>
+		<button type="button" class="btn btn-default" style="width: 162px; height: 50px;">비밀번호 찾기</button>
+		<button type="button" class="btn btn-danger" id="loginBtn" style="width: 108px; height: 50px; margin-left: auto">로그인</button>
+	</div>
+
+	<!-- <div class="modal-body">
 		<form class="form-horizontal">
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="userId">아이디:</label>
@@ -172,6 +172,6 @@
 			style="width: 162px; height: 50px;">비밀번호 찾기</button>
 		<button type="button" class="btn btn-danger" id="loginBtn"
 			style="width: 108px; height: 50px; margin-left: auto">로그인</button>
-	</div>
+	</div> -->
 </body>
 </html>
