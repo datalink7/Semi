@@ -5,8 +5,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties; 
 import java.util.Random;
+import java.util.Vector;
 
 import javax.mail.Message; 
 import javax.mail.MessagingException;
@@ -25,6 +27,131 @@ import oracle.db.DbConnect;
 
 public class UserDao {
 	DbConnect db=new DbConnect();
+	
+	
+	public void deleteNoti(String user_id)
+    {
+        Connection conn=null;
+        PreparedStatement pstmt=null;
+        String sql="delete from tb_noti where user_id=?";
+        
+        conn=db.getConnection();
+        try {
+            pstmt=conn.prepareStatement(sql);
+            
+            pstmt.setString(1,user_id);
+            
+            
+            pstmt.execute();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }finally {
+            db.dbClose(pstmt, conn);
+        }
+    }
+   
+   
+	public List<UserDto> getAllUserData(String con, String val,String asc) {
+		List<UserDto> list=new Vector<UserDto>();
+		
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		String sql="select * from tb_user where "+con+"='"+val+"' order by "+asc;
+//		System.out.println(sql);
+		conn=db.getConnection();
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				UserDto dto=new UserDto();
+				dto.setUserId(rs.getString("user_id"));
+				dto.setUserName(rs.getString("user_name"));
+				dto.setUserPwd(rs.getString("user_pwd"));
+				dto.setUserPhone(rs.getString("user_phone"));
+				dto.setUserSex(rs.getString("user_sex"));
+				dto.setUserEmail(rs.getString("user_email"));
+				dto.setUserAddr1(rs.getString("user_addr1"));
+				dto.setUserAddr2(rs.getString("user_addr2"));
+				dto.setUserAddr3(rs.getString("user_addr3"));
+				dto.setUserAddr4(rs.getString("user_addr4"));
+				dto.setUserAddr5(rs.getString("user_addr5"));
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+		return list;
+	}
+
+	//�쑀�� �궘�젣
+	public void deleteUser(String userId)
+	{
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		String sql="delete tb_user where user_id=?";
+		conn=db.getConnection();
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, userId);
+
+			pstmt.execute();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
+
+	
+	
+	//�븘�씠�뵒濡� 媛쒖씤�젙蹂� 寃��깋
+	public UserDto getUserData(String userId) {
+		UserDto dto=new UserDto();
+		
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		String sql="select * from tb_user where user_id=?";
+		
+		conn=db.getConnection();
+		
+		System.out.println(sql);
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, userId);
+			rs=pstmt.executeQuery();
+			rs.next();
+			dto.setUserId(rs.getString("user_id"));
+			dto.setUserName(rs.getString("user_name"));
+			dto.setUserPwd(rs.getString("user_pwd"));
+			dto.setUserPhone(rs.getString("user_phone"));
+			dto.setUserSex(rs.getString("user_sex"));
+			dto.setUserEmail(rs.getString("user_email"));
+			dto.setUserAddr1(rs.getString("user_addr1"));
+			dto.setUserAddr2(rs.getString("user_addr2"));
+			dto.setUserAddr3(rs.getString("user_addr3"));
+			dto.setUserAddr4(rs.getString("user_addr4"));
+			dto.setUserAddr5(rs.getString("user_addr5"));
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+		return dto;
+	}
+	
 	
 	//아이디를 검색해서 있으면 true, 없으면 false 반환
 	public boolean isEqualId(UserDto dto, String state)
@@ -101,6 +228,39 @@ public class UserDao {
 			db.dbClose(pstmt, conn);
 		}
 	}
+	
+	//媛쒖씤�젙蹂� �닔�젙
+	public void updateUser(UserDto dto)
+	{
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		String sql="update tb_user set user_pwd=?, user_phone=?, user_sex=?, user_email=?, user_addr1=?, user_name=? where user_id=?";
+		
+		//db�뿰寃�
+		conn=db.getConnection();
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			//諛붿씤�뵫
+			pstmt.setString(1, dto.getUserPwd());
+			pstmt.setString(2, dto.getUserPhone());
+			pstmt.setString(3, dto.getUserSex());
+			pstmt.setString(4, dto.getUserEmail());
+			pstmt.setString(5, dto.getUserAddr1());
+			pstmt.setString(6, dto.getUserName());
+			pstmt.setString(7, dto.getUserId());
+			//�떎�뻾
+			pstmt.execute();
+			System.out.println("�쉶�썝�젙蹂댁닔�젙�셿猷�!");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
+
 	
 	public boolean isLogin(String userId, String userPwd)
 	{

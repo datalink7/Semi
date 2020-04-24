@@ -1,3 +1,5 @@
+<%@page import="user.data.UserDto"%>
+<%@page import="user.data.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!doctype html>
@@ -50,10 +52,55 @@ $(function(){
 		$(this).css("background-color","white");
 		$(this).css("color","black");
 	});
+	$(".userSex[value='F']").prop("checked", true);
+	
+	$(".btnUpdate").click(function(){
+		var userPwd1=$("#userPwd1").val();
+		var userPwd=$("#userPwd").val();
+		console.log(userPwd1);
+		console.log(userPwd);
+		if(userPwd1!=userPwd){
+			alert("비밀번호가 일치하지 않습니다.");
+			$("#userPwd1").val("").focus();
+		}
+	});
+
 });
 
 
 </script>
+<%
+Cookie[] cookies=request.getCookies();
+String userId="";
+if(cookies!=null){//저장된 쿠키 있음
+	//배열 형태이므로 반복문
+	for(Cookie cookie:cookies){
+		//저장된 name얻기
+		String name=cookie.getName();
+		//저장된 값 얻기
+		String value=cookie.getValue();
+		//이클립스 콘솔에 출력
+// 			System.out.println("name="+name+",value="+value);
+		//login에 ok면 이미 로그인중이라는 뜻
+		if(name.equals("login")){
+			userId=value;
+		}
+		else{//임시로 admin 강제
+			userId="admin";
+		}
+	}
+}
+	System.out.println(userId);
+	UserDao uDao=new UserDao();
+	UserDto uDto=uDao.getUserData(userId);
+	
+	String email=uDto.getUserEmail();
+	String[] userEmail=email.split("@");
+	System.out.println(userEmail[0]);
+	System.out.println(userEmail[1]);
+%>
+
+
 </head>
 <body class="body-wrapper">
 	<!-- 상단헤더고정 -->
@@ -74,7 +121,7 @@ $(function(){
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="navbar-nav ml-auto main-nav ">
 								<li class="nav-item active">
-									<a class="nav-link" href="../index.jsp"><b>Home</b></a>
+									<a class="nav-link" href="../index.jsp">Home</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" href="../reservation.jsp">예약</a>
@@ -83,7 +130,7 @@ $(function(){
 									<a class="nav-link" href="../myReservation.jsp">조회</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="../user/mypage.jsp">마이페이지</a>
+									<a class="nav-link" href="../user/mypage.jsp"><b>마이페이지</b></a>
 								</li>
 								<li class="nav-item dropdown dropdown-slide">
 									<a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">고객센터 
@@ -131,15 +178,15 @@ $(function(){
 							<tbody>
 								<tr>
 									<td style="width: 25%;"><b>아이디</b></td>
-									<td style="width: 25%;">ADMIN</td>
+									<td style="width: 25%;"><%=uDto.getUserId() %></td>
 									<td style="width: 25%;"><b>이름</b></td>
-									<td style="width: 25%;">김승현</td>
+									<td style="width: 25%;"><%=uDto.getUserName() %></td>
 								</tr>
 								<tr>
 									<td><b>핸드폰번호</b></td>
-									<td>010-1234-5678</td>
+									<td><%=uDto.getUserPhone() %></td>
 									<td><b>성별</b></td>
-									<td>남</td>
+									<td><%=uDto.getUserSex().equals("M")?"남자":"여자" %></td>
 								</tr>
 							</tbody>
 						</table>
@@ -148,8 +195,8 @@ $(function(){
 								<!-- Store Search -->
 								<div class="col-lg-12 col-md-12">
 									<div class="block d-flex">
-										<button type="button" class="btn btn-danger mypageBtn" style="margin: auto; width: 30%;">택배예약현황</button>
-										<button type="button" class="btn btn-danger mypageBtn" style="margin: auto; width: 30%;">온라인 문의내역</button>
+										<button type="button" class="btnResv btn btn-danger mypageBtn" style="margin: auto; width: 30%;">택배예약현황</button>
+										<button type="button" class="btnQna btn btn-danger mypageBtn" style="margin: auto; width: 30%;">온라인 문의내역</button>
 										<button type="button" class="btn btn-danger mypageBtn" style="margin: auto; width: 30%;">주소록관리</button>
 										
 									</div>
@@ -176,42 +223,43 @@ $(function(){
 				<div class="modal-body" style="padding-bottom: 0px;">
 					<table class="table">
 						<tbody>
+						<form action="userupdate.jsp" method="post">
 							<tr>
 								<td style="width: 26%;">아이디</td>
 								<td>
-									<input type="text" class="form-control" id="" name="" style="height: 30px; float: left" readonly>
+									<input type="text" class="form-control" id="userId" name="userId" style="height: 30px; float: left" readonly value=<%=uDto.getUserId() %>>
 								</td>
 							</tr>
 							<tr>
 								<td style="width: 26%;">비밀번호</td>
-								<td><input type="password" class="form-control" id="" name="" style="height: 30px;"></td>
+								<td><input type="password" class="form-control" id="userPwd" name="userPwd" style="height: 30px;" value=<%=uDto.getUserPwd() %>></td>
 							</tr>
 							<tr>
 								<td style="width: 26%;">비밀번호확인</td>
-								<td><input type="password" class="form-control" id="" name="" style="height: 30px;"></td>
+								<td><input type="password" class="form-control" id="userPwd1" name="userPwd1" style="height: 30px;"></td>
 							</tr>
 							<tr>
 								<td style="width: 26%;">이름</td>
-								<td><input type="password" class="form-control" id="" name="" style="height: 30px;"></td>
+								<td><input type="text" class="form-control" id="userName" name="userName" style="height: 30px;" value=<%=uDto.getUserName() %>></td>
 							</tr>
 							<tr>
 								<td style="width: 26%;">핸드폰번호</td>
-								<td><input type="password" class="form-control" id="" name="" style="height: 30px;"></td>
+								<td><input type="text" class="form-control" id="userPhone" name="userPhone" style="height: 30px;" value=<%=uDto.getUserPhone() %>></td>
 							</tr>
 							<tr>
 								<td style="width: 26%;">성별</td>
 								<td>
 									<div class="radio">
-										<label><input type="radio" name="" value="M" checked>남자</label>
-										<label><input type="radio" name="" value="F">여자</label>
+										<label><input type="radio" class="userSex" name="userSex" value="M">남자</label>
+										<label><input type="radio" class="userSex" name="userSex" value="F">여자</label>
 									</div>
 								</td>
 							</tr>
 							<tr>  
 								<td style="width: 26%;">이메일</td>
 								<td>
-									<input type="text" class="form-control col-sm-5" id="" name="" style="height: 30px; float: left">&nbsp@
-									<input type="text" class="form-controll col-sm-6" id="" name="" style="height: 30px;">
+									<input type="text" class="form-control col-sm-5" id="userEmail1" name="userEmail1" style="height: 30px; float: left" value=<%=userEmail[0] %>>&nbsp@
+									<input type="text" class="form-controll col-sm-6" id="userEmail2" name="userEmail2" style="height: 30px;" value=<%=userEmail[1] %>>
 									<select class="form-control"  id="" name="" style="height: 36px; margin-top: 4px;">
 										<option value="-">직접입력</option>
 										<option value="gmail.com">구글</option>
@@ -224,16 +272,17 @@ $(function(){
 							<tr>   
 								<td style="width: 26%;">주소</td>
 								<td>
-									<input type="text" class="form-control col-sm-8" id="" name="" style="height: 30px; float: left">
+									<input type="text" class="form-control col-sm-8" id="userAddr1" name="userAddr1" style="height: 30px; float: left" value=<%=uDto.getUserAddr1()%>>
 									<button type="button" id="btnaddr" class="btn btn-sm" style="padding: 3px 10px; margin-left: 5px;">주소검색</button>
-									<input type="text" class="form-control" id="" name="" style="height: 30px; margin-top: 4px;">
+									<input type="text" class="form-control" id="userAddr2" name="userAddr2" style="height: 30px; margin-top: 4px;">
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" style="width: 124px; height: 50px; margin-left: auto">수정하기</button>
+					<button type="submit" class="btn btn-danger btnUpdate" style="width: 124px; height: 50px; margin-left: auto">수정하기</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -257,24 +306,26 @@ $(function(){
 					<p>* 회원 탈퇴 후 재가입 시에는 신규 회원으로 가입되며, 탈퇴 전의 거래정보와 쿠폰 등은 복구되지 않습니다.</p>
 					<p>* 회원 탈퇴 이후에는 게시글 편집, 삭제 등이 불가능하므로 게시글 편집, 삭제 후 탈퇴하시기 바랍니다.</p>
 					</h6>
+					<form action="userdeleteaction.jsp" method="get">
 					<table class="table">
 						<tbody>
 							<tr>
 								<td style="width: 26%;">아이디</td>
 								<td>
-									<input type="text" class="form-control" id="" name="" style="height: 30px; float: left" readonly>
+									<input type="text" class="form-control" id="user_id" name="user_id" style="height: 30px; float: left" readonly value=<%=uDto.getUserId()%>>
 								</td>
 							</tr>
 							<tr>
 								<td style="width: 26%;">비밀번호</td>
-								<td><input type="password" class="form-control" id="" name="" style="height: 30px;"></td>
+								<td><input type="password" class="form-control" id="user_pwd" name="user_pwd" style="height: 30px;"></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" style="width: 124px; height: 50px; margin-left: auto">탈퇴하기</button>
+					<button type="submit" class="btn btn-danger" style="width: 124px; height: 50px; margin-left: auto">탈퇴하기</button>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -282,7 +333,37 @@ $(function(){
 <!--===================================
 =            Client Slider            =
 ====================================-->
+<script type="text/javascript">
+$(function() {
+	$(".btnResv").click(function(){
+		<%if(userId==null||userId.isEmpty()){%>
+		alert("로그인필요");
+		return;
+	<%}else{%>
+		var resvType=$(this).attr("resvType");
+		console.log(resvType);
+		$(".em").html("<embed src='../myResv/myResv.jsp' width=100% height=410px>");
+	<%}%>
 
+	});
+	
+	$(".btnQna").click(function(){
+		<%if(userId==null||userId.isEmpty()){%>
+		alert("로그인필요");
+		return;
+	<%}else{%>
+		var resvType=$(this).attr("resvType");
+		console.log(resvType);
+		$(".em").html("<embed src='../user/myqna.jsp' width=100% height=410px>");
+	<%}%>
+
+	});
+
+});
+
+
+
+</script>
 
 
 <!--==========================================
@@ -291,76 +372,7 @@ $(function(){
 
 <section class=" section">
 	<!-- Container Start -->
-	<div class="container">
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>글번호</th>
-					<th>문의종류</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>작성일</th>
-					<th>작성시간</th>
-					<th>조회수</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>예약관련1</td>
-					<td>예약문의좀할게요!!@@!!@@!@!!@</td>
-					<td>John</td>
-					<td>2020-04-17</td>
-					<td>17:40:05</td>
-					<td>0</td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>예약관련2</td>
-					<td>예약문의좀할게요!!@@!!@@!@!!@</td>
-					<td>Mary</td>
-					<td>2020-04-17</td>
-					<td>17:40:05</td>
-					<td>5</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>예약관련3</td>
-					<td>예약문의좀할게요!!@@!!@@!@!!@</td>
-					<td>July</td>
-					<td>2020-04-17</td>
-					<td>17:40:05</td>
-					<td>41</td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td>예약관련4</td>
-					<td>예약문의좀할게요!!@@!!@@!@!!@</td>
-					<td>John</td>
-					<td>2020-04-17</td>
-					<td>17:40:05</td>
-					<td>13</td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td>예약관련5</td>
-					<td>예약문의좀할게요!!@@!!@@!@!!@</td>
-					<td>Mary</td>
-					<td>2020-04-17</td>
-					<td>17:40:05</td>
-					<td>10</td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td>예약관련6</td>
-					<td>예약문의좀할게요!!@@!!@@!@!!@</td>
-					<td>2020-04-17</td>
-					<td>2020-04-17</td>
-					<td>17:40:05</td>
-					<td>2</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="container em">
 	</div>
 	<!-- Container End -->
 </section>

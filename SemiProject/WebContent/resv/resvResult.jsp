@@ -20,7 +20,7 @@ $(function() {
 	});
 	$(".toMyPage").click(function() {
 		<%if(resvType.equals("1")){ %>
-			opener.location.href = "index.jsp"; //마이페이지 완성시 부모창을 마이페이지로 이동
+			opener.parent.location.href = "../myReservation.jsp"; //마이페이지 완성시 부모창을 마이페이지로 이동
 		<%}else{%>
 			window.parent.location.href='../reservation.jsp';
 		<%}%>

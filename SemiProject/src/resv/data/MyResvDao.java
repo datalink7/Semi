@@ -106,13 +106,41 @@ public class MyResvDao {
 		}
 		return list;
 	}
-	
 	public int getTotalCount() {
 		Connection conn=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		String sql="select count(*) from tb_resv";
 		int count=0;
+		System.out.println("sql="+sql);
+		conn=db.getConnection();
+		try {
+			pstmt=conn.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			rs.next();
+			count=rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+		return count;
+	}
+
+	public int getTotalCount(String userId) {
+		Connection conn=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		String sql="select count(*) from tb_resv";
+		if(userId!=null||userId.isEmpty())
+			sql+=" where user_id='"+userId+"'";
+		else if(userId.equals("admin")) {
+			
+		}
+		int count=0;
+		System.out.println("sql1="+sql);
+		System.out.println("dao"+userId);
 		conn=db.getConnection();
 		try {
 			pstmt=conn.prepareStatement(sql);
@@ -129,7 +157,7 @@ public class MyResvDao {
 	}
 
 	
-	public int getTotalCount(String resvType) {
+	public int getTypeTotalCount(String resvType) {
 		Connection conn=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;

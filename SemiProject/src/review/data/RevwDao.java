@@ -76,7 +76,7 @@ public class RevwDao {
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		List<RevwDto> list=new Vector<RevwDto>();
-		String sql="select * from tb_review order by revw_num asc";
+		String sql="select * from tb_review order by revw_num desc";
 		
 		conn=db.getConnection();
 		

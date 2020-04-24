@@ -69,7 +69,7 @@
 		}else if(resvType.equals("3")){
 			resvType="일반 택배 예약";
 		}
-		totalCount=mDao.getTotalCount(resvType);
+		totalCount=mDao.getTypeTotalCount(resvType);
 	}
 	//총 페이지 갯수
 	totalPage=totalCount/perPage+(totalCount%perPage>0?1:0);

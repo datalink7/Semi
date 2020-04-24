@@ -21,11 +21,30 @@
 	String boxCode=request.getParameter("boxCode");
 	String resvStDate=request.getParameter("resvStDate");
 	String resvEdDate=request.getParameter("resvEdDate");
-	String userId;
-	if((String)session.getAttribute("userId")==null)
-		userId="admin";
-	else
-		userId=(String)session.getAttribute("userId");
+	
+	Cookie[] cookies=request.getCookies();
+	String userId="";
+	if(cookies!=null){//저장된 쿠키 있음
+		//배열 형태이므로 반복문
+		for(Cookie cookie:cookies){
+			//저장된 name얻기
+			String name=cookie.getName();
+			//저장된 값 얻기
+			String value=cookie.getValue();
+			//이클립스 콘솔에 출력
+	// 			System.out.println("name="+name+",value="+value);
+			//login에 ok면 이미 로그인중이라는 뜻
+			if(name.equals("login")){
+				userId=value;
+			}
+		}
+	}
+	
+// 	String userId;
+// 	if((String)session.getAttribute("userId")==null)
+// 		userId="admin";
+// 	else
+// 		userId=(String)session.getAttribute("userId");
 %>
 <script>
 $(function() {

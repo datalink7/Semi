@@ -68,6 +68,26 @@
   transition: max-height 0.2s ease-out;
 }
 </style>
+<%
+Cookie[] cookies=request.getCookies();
+String userId="";
+if(cookies!=null){//저장된 쿠키 있음
+	//배열 형태이므로 반복문
+	for(Cookie cookie:cookies){
+		//저장된 name얻기
+		String name=cookie.getName();
+		//저장된 값 얻기
+		String value=cookie.getValue();
+		//이클립스 콘솔에 출력
+// 			System.out.println("name="+name+",value="+value);
+		//login에 ok면 이미 로그인중이라는 뜻
+		if(name.equals("login")){
+			userId=value;
+		}
+	}
+}
+ %>
+
 <script type="text/javascript">
 $(function(){
 	var acc = document.getElementsByClassName("accordion");
@@ -101,7 +121,7 @@ $(function(){
 			<div class="row">
 				<div class="col-md-12">
 					<nav class="navbar navbar-expand-lg  navigation">
-						<a class="navbar-brand" href="../index.jsp"> 
+						<a class="navbar-brand" href="index.jsp"> 
 							<img src="images/main_logo.png" style="width: 196px; height: 52px;" alt="">
 						</a>
 						<button class="navbar-toggler" type="button"
@@ -116,10 +136,10 @@ $(function(){
 									<a class="nav-link" href="index.jsp">Home</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="reservation.jsp">예약</a>
+									<a class="nav-link" href="reservation.jsp"><b>예약</b></a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="myReservation.jsp"><b>조회</b></a>
+									<a class="nav-link" href="myReservation.jsp">조회</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" href="user/mypage.jsp">마이페이지</a>
@@ -136,13 +156,38 @@ $(function(){
 								</li>
 							</ul>
 							<ul class="navbar-nav ml-auto mt-10">
-								<li class="nav-item">
-									<a class="nav-link login-button" href="#" data-toggle="modal" data-target="#joinModal">JoinUs</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link login-button" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
-								</li>
-							</ul>
+<%Cookie[] cookies1=request.getCookies();
+                        	boolean bb=false;
+							if(cookies!=null){//저장된 쿠키 있음
+								//배열 형태이므로 반복문
+								for(Cookie cookie:cookies1){
+									//저장된 name얻기
+									String name=cookie.getName();
+									//저장된 값 얻기
+									String value=cookie.getValue();
+									//이클립스 콘솔에 출력
+						// 			System.out.println("name="+name+",value="+value);
+									//login에 ok면 이미 로그인중이라는 뜻
+									if(name.equals("login")){
+										%><%=value %> <%
+										bb=true;
+									}
+								}
+							}
+							//bLogin이 true면 로그아웃폼을, false면 로그인폼을 include
+							if(!bb){%>
+                                <li class="nav-item" id="joinLi" style="display: block;">
+                  				     <a class="nav-link login-button" href="#" data-toggle="modal" data-target="#joinModal">JoinUs</a>
+                  			   </li>
+		                        <li class="nav-item" id="loginLi" style="display: block;">
+		                           <a class="nav-link login-button" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+		                        </li>
+		                        <%}else{ %>
+		                        
+		                        <li class="nav-item" id="logoutLi" style="display: block;">
+		                           <a class="nav-link login-button" href="login/logoutaction.jsp">Logout</a>
+		                        </li>
+                        <%} %>							</ul>
 						</div>
 					</nav>  
 				</div>
@@ -194,11 +239,16 @@ $(function(){
 <script type="text/javascript">
 $(function() {
 	$(".btnResv").click(function() {
-		var resvType=$(this).attr("resvType");
-		console.log(resvType);
-		$(".em").html("<embed src='myResv/myResv.jsp?resvType="+resvType+"' width=100% height=800px>");
-// 		$("div.sel").removeClass("select");
-// 		$(this).addClass("select");
+		<%if(userId==null||userId.isEmpty()){%>
+			alert("로그인필요");
+			return;
+		<%}else{%>
+			var resvType=$(this).attr("resvType");
+			console.log(resvType);
+			$(".em").html("<embed src='myResv/myResv.jsp?resvType="+resvType+"' width=100% height=800px>");
+	// 		$("div.sel").removeClass("select");
+	// 		$(this).addClass("select");
+		<%}%>
 	});
 	$(".btnResv").on("click",function(){
 		$(".btnResv").css("background-color","#dc3545");
@@ -218,7 +268,14 @@ $(function() {
 <section class=" section">
 	<!-- Container Start -->
 	<div class="container em">
-			<embed src="myResv/myResv.jsp?resvType=" width=100% height=410px>
+			<%if(userId==null||userId.isEmpty()){
+				%>로그인필요<%
+				
+			}else{
+				%><embed src="myResv/myResv.jsp?resvType=" width=100% height=410px><%
+			}%>
+	
+	
 	</div>
 	<!-- Container End -->
 </section>
@@ -235,7 +292,7 @@ $(function() {
 					<!-- About -->
 					<div class="block about">
 						<!-- footer logo -->
-						<img src="../images/logo-footer.png" alt="">
+						<img src="../images/main_logo2.png" alt="" style="width: 200px;">
 						<!-- description -->
 						<p class="alt-color">Lorem ipsum dolor sit amet, consectetur
 							adipisicing elit, sed do eiusmod tempor incididunt ut labore et
@@ -292,17 +349,17 @@ $(function() {
 				<div class="col-sm-6 col-12">
 					<!-- Copyright -->
 					<div class="copyright">
-						<p>Copyright © 2016. All Rights Reserved</p>
+             		     <p>Copyright © 2020. 김승현 홍건우 김지윤 최환민 All Rights Reserved</p>
 					</div>
 				</div>
 				<div class="col-sm-6 col-12">
 					<!-- Social Icons -->
-					<ul class="social-media-icons text-right">
-						<li><a class="fa fa-facebook" href=""></a></li>
-						<li><a class="fa fa-twitter" href=""></a></li>
-						<li><a class="fa fa-pinterest-p" href=""></a></li>
-						<li><a class="fa fa-vimeo" href=""></a></li>
-					</ul>
+<!-- 					<ul class="social-media-icons text-right"> -->
+<!-- 						<li><a class="fa fa-facebook" href=""></a></li> -->
+<!-- 						<li><a class="fa fa-twitter" href=""></a></li> -->
+<!-- 						<li><a class="fa fa-pinterest-p" href=""></a></li> -->
+<!-- 						<li><a class="fa fa-vimeo" href=""></a></li> -->
+<!-- 					</ul> -->
 				</div>
 			</div>
 		</div>

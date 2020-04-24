@@ -45,10 +45,10 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 $(function(){
+// 	$("#logoutLi").css("display","none");
    $("#btnaddr").on("click",function(){
       post1();
    });
-   
    function post1() {
        new daum.Postcode({
            oncomplete: function(data) {
@@ -90,12 +90,15 @@ $(function(){
             "userIdSave":userIdSave
          },
          success:function(data){
-            alert($(data).text().trim());
+            //alert($(data).text().trim());
             if($(data).text().trim()=='yes'){
                console.log($(data).text());
                $("#loginModal").modal("hide");
+               $("#logoutLi").css("display","block");
                $("#loginLi").css("display", "none");
                $("#joinLi").css("display", "none");
+				window.location.reload();
+
             }else{
                alert("로그인 정보를 정확히 입력해주세요.");
                history.back();
@@ -292,6 +295,8 @@ $(function(){
 			});
 		}
 	});
+	
+	
 });
 </script>
 </head>
@@ -337,15 +342,38 @@ $(function(){
                         </li>
                      </ul>
                      <ul class="navbar-nav ml-auto mt-10">
-                        <li class="nav-item" id="joinLi" style="display: block;">
-                           <a class="nav-link login-button" href="#" data-toggle="modal" data-target="#joinModal">JoinUs</a>
-                        </li>
-                        <li class="nav-item" id="loginLi" style="display: block;">
-                           <a class="nav-link login-button" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
-                        </li>
-                        <li class="nav-item" id="logoutLi" style="display: block;">
-                           <a class="nav-link login-button" href="#">Logout</a>
-                        </li>
+                        	<%Cookie[] cookies=request.getCookies();
+                        	boolean bb=false;
+							if(cookies!=null){//저장된 쿠키 있음
+								//배열 형태이므로 반복문
+								for(Cookie cookie:cookies){
+									//저장된 name얻기
+									String name=cookie.getName();
+									//저장된 값 얻기
+									String value=cookie.getValue();
+									//이클립스 콘솔에 출력
+						// 			System.out.println("name="+name+",value="+value);
+									//login에 ok면 이미 로그인중이라는 뜻
+									if(name.equals("login")){
+										%><%=value %> <%
+										bb=true;
+									}
+								}
+							}
+							//bLogin이 true면 로그아웃폼을, false면 로그인폼을 include
+							if(!bb){%>
+                                <li class="nav-item" id="joinLi" style="display: block;">
+                  				     <a class="nav-link login-button" href="#" data-toggle="modal" data-target="#joinModal">JoinUs</a>
+                  			   </li>
+		                        <li class="nav-item" id="loginLi" style="display: block;">
+		                           <a class="nav-link login-button" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+		                        </li>
+		                        <%}else{ %>
+		                        
+		                        <li class="nav-item" id="logoutLi" style="display: block;">
+		                           <a class="nav-link login-button" href="login/logoutaction.jsp">Logout</a>
+		                        </li>
+                        <%} %>
                      </ul>
                   </div>
                </nav>  

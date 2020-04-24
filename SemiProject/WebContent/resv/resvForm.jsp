@@ -175,7 +175,7 @@ $(function(){
 					<!-- About -->
 					<div class="block about">
 						<!-- footer logo -->
-						<img src="../images/logo-footer.png" alt="">
+						<img src="../images/main_logo2.png" alt="" style="width: 200px;">
 						<!-- description -->
 						<p class="alt-color">Lorem ipsum dolor sit amet, consectetur
 							adipisicing elit, sed do eiusmod tempor incididunt ut labore et

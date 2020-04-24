@@ -413,17 +413,17 @@ $(function(){
 				<div class="col-sm-6 col-12">
 					<!-- Copyright -->
 					<div class="copyright">
-						<p>Copyright © 2016. All Rights Reserved</p>
+                	  <p>Copyright © 2020. 김승현 홍건우 김지윤 최환민 All Rights Reserved</p>
 					</div>
 				</div>
 				<div class="col-sm-6 col-12">
 					<!-- Social Icons -->
-					<ul class="social-media-icons text-right">
-						<li><a class="fa fa-facebook" href=""></a></li>
-						<li><a class="fa fa-twitter" href=""></a></li>
-						<li><a class="fa fa-pinterest-p" href=""></a></li>
-						<li><a class="fa fa-vimeo" href=""></a></li>
-					</ul>
+<!-- 					<ul class="social-media-icons text-right"> -->
+<!-- 						<li><a class="fa fa-facebook" href=""></a></li> -->
+<!-- 						<li><a class="fa fa-twitter" href=""></a></li> -->
+<!-- 						<li><a class="fa fa-pinterest-p" href=""></a></li> -->
+<!-- 						<li><a class="fa fa-vimeo" href=""></a></li> -->
+<!-- 					</ul> -->
 				</div>
 			</div>
 		</div>

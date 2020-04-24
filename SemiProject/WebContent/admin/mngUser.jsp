@@ -1,3 +1,6 @@
+<%@page import="user.data.UserDto"%>
+<%@page import="java.util.List"%>
+<%@page import="user.data.UserDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!doctype html>
@@ -41,6 +44,7 @@
 <script src="../plugins/fancybox/jquery.fancybox.pack.js"></script>
 <!-- <script src="plugins/smoothscroll/SmoothScroll.min.js"></script> -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <style>
 .accordion {
@@ -67,6 +71,12 @@
   overflow: hidden;
   transition: max-height 0.2s ease-out;
 }
+.map{
+	width:1000px;
+	position:relative;
+	left:50%;
+	margin-left:-500px;
+}
 </style>
 <%
 Cookie[] cookies=request.getCookies();
@@ -86,9 +96,14 @@ if(cookies!=null){//저장된 쿠키 있음
 		}
 	}
 }
+
 %>
 
 <script type="text/javascript">
+var asc;
+var con;
+var val;
+
 $(function(){
 	var acc = document.getElementsByClassName("accordion");
 	var i;
@@ -104,14 +119,129 @@ $(function(){
 	    } 
 	  });
 	}
-	
-	$(".btnResv").on("click",function(){
-		$(".btnResv").css("background-color","#dc3545");
-		$(".btnResv").css("color","#fff");
+	list();
+// 	$(".faqBtn").on("click",function(){
+// 		$(".faqBtn").css("background-color","#dc3545");
+// 		$(".faqBtn").css("color","#fff");
+// 		$(this).css("background-color","white");
+// 		$(this).css("color","black");
+// 	});
+
+   $("#btnaddr").on("click",function(){
+      post1();
+   });
+   
+   function post1() {
+       new daum.Postcode({
+           oncomplete: function(data) {
+               // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+               // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+              var zonecode=data.zonecode;
+              var roadAddr = data.address;
+              var str="("+zonecode+")"+roadAddr;
+//               console.log(str);
+               $("#addr1").val(str);
+           }
+       }).open();
+   }
+
+	$(".faqBtn").on("click",function(){
+		$(".faqBtn").css("background-color","#dc3545");
+		$(".faqBtn").css("color","#fff");
 		$(this).css("background-color","white");
 		$(this).css("color","black");
 	});
+
+	$(document).on("click",".updatebtn",function() {
+
+		var userId=$(this).attr("userId");
+		console.log(userId);
+		$.ajax({
+			type:"post",
+			dataType: "xml",
+			data:{"userId":userId},
+			url:"user/getUser.jsp",
+			success: function(data) {
+				var userid=$(data).find("userid").text();
+				var username=$(data).find("name").text();
+				var usersex=$(data).find("sex").text();
+				var phone=$(data).find("phone").text();
+				var email1=$(data).find("email1").text();
+				var email2=$(data).find("email2").text();
+				var addr1=$(data).find("addr1").text();
+				var pwd=$(data).find("pwd").text();
+
+				$("#userId").val(userid);
+				$("#userName").val(username);
+				$(".userSex[value='"+usersex+"']").prop("checked", true);
+				$("#userPhone").val(phone);
+				$("#userEmail1").val(email1);
+				$("#userEmail2").val(email2);
+				$("#addr1").val(addr1);
+				$("#userPwd").val(pwd);
+			}
+		});
+	});
+	$(document).on("click",".delbtn",function() {
+		var userId=$(this).attr("userId");
+		$.ajax({
+			type:"post",
+			dataType: "html",
+			data:{"userId":userId},
+			url:"user/delUser.jsp",
+			success: function(data) {
+				window.location.reload();
+				
+			}
+		});
+
+	});
+	$("button.con").click(function() {
+		asc=$(this).attr("asc");
+		con=$(this).attr("con");
+		val=$(this).attr("val");
+		list();
+// 		$("a.con").css("color","black").css("font-weight","normal");
+// 		$(this).css("color","red").css("font-weight","bold");
+	});
+	$(".sch").click(function() {
+		con="user_name";
+		val=$(".iptsch").val();
+		list();
+		$(".iptsch").val("");
+	});
+	
 });
+
+function list(){
+	$.ajax({
+		type:"post",
+		url:"/SemiProject111111/admin/user/allUser.jsp",
+		dataType:"xml",
+		data:{"asc":asc,"con":con,"val":val},
+		success:function(data){
+			var str="";
+			str+="<table class='table'>"+"<thead>"+"<tr>"+"<th>아이디</th><th>이름</th><th>성별</th><th>전화번호</th><th>이메일</th><th>주소</th><th>수정/삭제</th>"+"</tr>"+"</thead>";
+			var n=0;
+			$(data).find("data").each(function(i) {
+
+				var userid=$(this).find("userid").text();
+				var username=$(this).find("name").text();
+				var usersex=$(this).find("sex").text();
+				var phone=$(this).find("phone").text();
+				var email1=$(this).find("email1").text();
+				var email2=$(this).find("email2").text();
+				var addr1=$(this).find("addr1").text();
+				var pwd=$(this).find("pwd").text();
+				
+				str+="<tr>"+"<td>"+userid+"</td><td>"+username+"</td><td>"+usersex+"</td><td>"+phone+"</td><td>"+email1+"@"+email2+"</td><td>"+addr1+"</td><td>"+"<button type='button' class='updatebtn' data-toggle='modal' data-target='#updateModal'  userId="+userid+">수정</button> / <button class='delbtn' userId="+userid+">삭제</button>"+"</td></tr>";
+			});
+			str+="</table>"
+			$(".viewUser").html(str);
+		}
+	});
+}
+
 </script>
 </head>
 <body class="body-wrapper">
@@ -139,13 +269,13 @@ $(function(){
 									<a class="nav-link" href="admin.jsp">관리자Home</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="mngResv.jsp"><b>예약 관리</b></a>
+									<a class="nav-link" href="mngResv.jsp">예약 관리</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" href="mngMap.jsp">지도 관리</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="mngUser.jsp">회원 관리</a>
+									<a class="nav-link" href="mngUser.jsp"><b>회원 관리</b></a>
 								</li>
 								<li class="nav-item dropdown dropdown-slide">
 									<a class="nav-link dropdown-toggle" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">고객센터 
@@ -208,7 +338,8 @@ $(function(){
 				<div class="col-md-12">
 					<!-- Header Contetnt -->
 					<div class="content-block">
-						<h1>예약 관리</h1>
+						<h1>회원 관리</h1>
+<!-- 						<p>Quick Box - FAQ</p> -->
 						
 					</div>
 					<!-- Advance Search -->
@@ -218,23 +349,98 @@ $(function(){
 								<!-- Store Search -->
 								<div class="col-lg-12 col-md-12">
 									<div class="block d-flex">
-										<button resvType="" type="button" class="btn btn-danger btnResv" style="margin: auto;">전체예약조회</button>
-										<button resvType="1" type="button" class="btn btn-danger btnResv" style="margin: auto;">보관함예약조회</button>
-										<button resvType="2" type="button" class="btn btn-danger btnResv" style="margin: auto;">반값예약조회</button>
-										<button resvType="3" type="button" class="btn btn-danger btnResv" style="margin: auto;">일반택배예약조회</button>
-									
+										<button type="button" class="con btn btn-danger faqBtn" style="margin: auto;">전체 검색</button>
+										<button type="button" asc="user_name" class="con btn btn-danger faqBtn" style="margin: auto;">이름순</button>
+										<button type="button" con="user_sex" val="M" asc="user_name" class="con btn btn-danger faqBtn" style="margin: auto;">남자검색</button>
+										<button type="button" con="user_sex" val="F" asc="user_name" class="con btn btn-danger faqBtn" style="margin: auto;">여자검색</button>
+										<!-- 여유 있으면 box관리 추가 -->
+<!-- 										<button type="button" class="btn btn-danger faqBtn" style="margin: auto;">픽업관련</button> -->
+<!-- 										<button type="button" class="btn btn-danger faqBtn" style="margin: auto;">택배보관관련</button> -->
+<!-- 										<button type="button" class="btn btn-danger faqBtn" style="margin: auto;">결제관련</button> -->
+<!-- 										<button type="button" class="btn btn-danger faqBtn" style="margin: auto;">회원가입/로그인관련</button> -->
 									</div>
 								</div>
 							</div>
 						</form>
-
+						
 					</div>
-
+					
 				</div>
 			</div>
 		</div>
 		<!-- Container End -->
 	</section>
+   <!-- updateModal -->
+   <div class="modal fade" id="updateModal" role="dialog">
+      <div class="modal-dialog modal-md" style="">
+         <div class="modal-content">     
+            <div class="modal-header">
+               <h4 class="modal-title">회원 수정</h4>
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px;">
+               <table class="table">
+               <form method="post" action="user/userupdate.jsp">
+                  <tbody>
+                     <tr>
+                        <td style="width: 26%;">아이디</td>
+                        <td>
+                           <input type="text" class="form-control col-sm-8" id="userId" name="userId" style="height: 30px; float: left" readonly="readonly">
+                        </td>
+                     </tr>
+                     <tr>
+                        <td style="width: 26%;">비밀번호</td>
+                        <td><input type="password" class="form-control" id="userPwd" name="userPwd" style="height: 30px;"></td>
+                     </tr>
+                     <tr>
+                        <td style="width: 26%;">이름</td>
+                        <td><input type="text" class="form-control" id="userName" name="userName" style="height: 30px;"></td>
+                     </tr>
+                     <tr>
+                        <td style="width: 26%;">핸드폰번호</td>
+                        <td><input type="text" class="form-control" id="userPhone" placeholder="'-' 를 빼고 입력해주세요." name="userPhone" style="height: 30px;"></td>
+                     </tr>
+                     <tr>
+                        <td style="width: 26%;">성별</td>
+                        <td>
+                           <div class="radio">
+                              <label><input type="radio" class="userSex" name="userSex" value="M" checked>남자</label>
+                              <label><input type="radio" class="userSex" name="userSex" value="F">여자</label>
+                           </div>
+                        </td>
+                     </tr>
+                     <tr>  
+                        <td style="width: 26%;">이메일</td>
+                        <td>
+                           <input type="text" class="form-control col-sm-5" id="userEmail1" name="userEmail1" style="height: 30px; float: left">&nbsp@
+                           <input type="text" class="form-controll col-sm-6" id="userEmail2" name="userEmail2" style="height: 30px;">
+                           <select class="form-control"  id="userEmail3" name="userEmail3" style="height: 36px; margin-top: 4px;">
+                              <option value="-">직접입력</option>
+                              <option value="gmail.com">구글</option>
+                              <option value="naver.com">네이버</option>
+                              <option value="daum.net">다음</option>     
+                              <option value="nate.com">네이트</option>
+                        </select>
+                        </td>
+                     </tr>
+                     <tr>   
+                        <td style="width: 26%;">주소</td>
+                        <td>
+                           <input type="text" class="form-control col-sm-8" id="addr1" name="addr1" style="height: 30px; float: left">
+                           <button type="button" id="btnaddr" class="btn btn-sm" style="padding: 3px 10px; margin-left: 5px;">주소검색</button>
+                           <input type="text" class="form-control" id="addr2" name="addr2" style="height: 30px; margin-top: 4px;">
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+            <div class="modal-footer">
+               <button type="submit" class="btn btn-danger" style="width: 124px; height: 50px; margin-left: auto">수정</button>
+            </div>
+            </form>
+         </div>
+      </div>
+   </div>
 
 <!--===================================
 =            Client Slider            =
@@ -242,27 +448,18 @@ $(function(){
 
 <script type="text/javascript">
 $(function() {
-	$(".btnResv").click(function() {
+	$(".btnMap").click(function() {
 	<%if(!userId.equals("admin")){%>
 		alert("관리자만 접근가능");
 		return;
 	<%}else{%>
-		var resvType=$(this).attr("resvType");
-		console.log(resvType);
-		$(".em").html("<embed src='resv/allResv.jsp?resvType="+resvType+"' width=100% height=450px>");
+		var src=$(this).attr("src");
+		$(".map").html("<embed src='"+src+"' width='600px' height='625px'>")
 	<%}%>
 
 	});
-	$(".btnResv").on("click",function(){
-		$(".btnResv").css("background-color","#dc3545");
-		$(".btnResv").css("color","#fff");
-		$(this).css("background-color","white");
-		$(this).css("color","black");
-	});
-
 });
 </script>
-
 
 <!--==========================================
 =            All Category Section            =
@@ -270,13 +467,14 @@ $(function() {
 
 <section class=" section">
 	<!-- Container Start -->
-	<div class="container em">
+	<div class="container">
+		<div class="map">
 		<%if(!userId.equals("admin")){%>
 			관리자만 접근가능
 		<%}else{%>
-			<embed src="resv/allResv.jsp?resvType=" width=100% height=450px>
+			<div class="viewUser"></div><div align="center"><input type="text" class="iptsch" placeholder="이름검색"><button class="sch">검색</button></div>
 		<%}%>
-			
+		</div>
 	</div>
 	<!-- Container End -->
 </section>

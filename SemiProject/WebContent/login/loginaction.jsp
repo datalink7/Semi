@@ -16,9 +16,16 @@
 	
 	//isLogin 메서드 호출
 	boolean bLogin=dao.isLogin(userId,userPwd);
-	//true 면 세션에 loginok,checkok,idok 저장 후
-	//이동 : successpage.jsp 를 메인 위치에
-	//false 면 스크립트로 경고 후 이전페이지 
+	if(bLogin){
+		Cookie cookie=new Cookie("login",userId);
+		//유지 시간 지정-테스트이므로 아주 짧게 주기
+		cookie.setMaxAge(-1);//10초
+		//저장될 경로 지정
+		cookie.setPath("/");
+		//브라우저에 쿠키 추가
+		response.addCookie(cookie);
+	}
+
 	System.out.println(bLogin?"yes":"no");
 %>
 <data><%=bLogin?"yes":"no"%></data>

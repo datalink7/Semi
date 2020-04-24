@@ -17,12 +17,32 @@
 <title>Insert title here</title>
 </head>
 <%
+	Cookie[] cookies=request.getCookies();
 	String userId="";
-	if(session.getAttribute("userId")==null){
-		userId="admin";
-	}else{
-		userId=session.getAttribute("userId").toString();
+	if(cookies!=null){//저장된 쿠키 있음
+		//배열 형태이므로 반복문
+		for(Cookie cookie:cookies){
+			//저장된 name얻기
+			String name=cookie.getName();
+			//저장된 값 얻기
+			String value=cookie.getValue();
+			//이클립스 콘솔에 출력
+	// 			System.out.println("name="+name+",value="+value);
+			//login에 ok면 이미 로그인중이라는 뜻
+			if(name.equals("login")){
+				userId=value;
+			}
+		}
 	}
+	System.out.println("myResv userId="+userId);
+
+
+// 	String userId="";
+// 	if(session.getAttribute("userId")==null){
+// 		userId="admin";
+// 	}else{
+// 		userId=session.getAttribute("userId").toString();
+// 	}
 	
 	
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -58,7 +78,7 @@
 	//시작페이지 구하기
 	//총 갯수
 	if(request.getParameter("resvType")==null||request.getParameter("resvType")==""){
-		totalCount=mDao.getTotalCount();
+		totalCount=mDao.getTotalCount(userId);
 	}else{
 		String resvType=request.getParameter("resvType");
 		System.out.println(resvType);
@@ -69,7 +89,8 @@
 		}else if(resvType.equals("3")){
 			resvType="일반 택배 예약";
 		}
-		totalCount=mDao.getTotalCount(resvType);
+		totalCount=mDao.getTypeTotalCount(resvType);
+		System.out.println("총수:"+totalCount);
 	}
 	//총 페이지 갯수
 	totalPage=totalCount/perPage+(totalCount%perPage>0?1:0);
@@ -153,10 +174,10 @@ if(list.size()==0){
 			<td>
 				<%if((sdf.format(time)).compareTo(sdf.format(list.get(i).getResvEdDate()))<=0){ %>
 					<%if(list.get(i).getResvCancelYn().equals("1")){ %>예약취소됨/<%}else{ %>
-						<button class="btnCancelResv btn btn-warning btn-sm" onclick="location.href='admin/mngResv/resvCancelAction.jsp?resvType=<%=resvType%>&userId=<%=userId%>&resvNum=<%=list.get(i).getResvNum()%>&cancel=1'">취소</button>
+						<button class="btnCancelResv btn btn-warning btn-sm" onclick="location.href='../admin/resv/resvCancelAction.jsp?resvType=<%=resvType%>&userId=<%=userId%>&resvNum=<%=list.get(i).getResvNum()%>&cancel=1'">취소</button>
 					<%} %>
 					<%if(list.get(i).getResvEndYn().equals("1")){ %>완료<%}else{ %>
-						<button class="btnEndResv btn btn-success btn-sm" onclick="location.href='admin/mngResv/resvCancelAction.jsp?resvType=<%=resvType%>&userId=<%=userId%>&resvNum=<%=list.get(i).getResvNum()%>&cancel=0'">종료</button>
+						<button class="btnEndResv btn btn-success btn-sm" onclick="location.href='../admin/resv/resvCancelAction.jsp?resvType=<%=resvType%>&userId=<%=userId%>&resvNum=<%=list.get(i).getResvNum()%>&cancel=0'">종료</button>
 				<%}}else{ %>
 					초과금액 결제 필요
 				
